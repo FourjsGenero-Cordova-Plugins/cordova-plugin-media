@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ANSI_X3.4-1968"?>
+<!--
+Property of Four Js*
+(c) Copyright Four Js 2017, 2017. All Rights Reserved.
+* Trademark of Four Js Development Tools Europe Ltd
+  in the United States and elsewhere
+
+Four Js and its suppliers do not warrant or guarantee that these
+samples are accurate and suitable for your purposes. Their inclusion is
+purely for information purposes only.
+-->
+<StyleList>
+  <Style name="Button.recordred">
+     <StyleAttribute name="defaultTTFColor" value="red" />
+     <StyleAttribute name="iosTintColor" value="red" />
+  </Style>
+  <Style name="Button.record_on">
+     <StyleAttribute name="backgroundColor" value="gray" />
+     <StyleAttribute name="iosTintColor" value="red" />
+     <StyleAttribute name="defaultTTFColor" value="red" />
+  </Style>
+  <Style name="Button._on">
+     <StyleAttribute name="backgroundColor" value="gray" />
+  </Style>
+  <Style name="TextEdit">
+     <StyleAttribute name="border" value="none" />
+  </Style>
+</StyleList>

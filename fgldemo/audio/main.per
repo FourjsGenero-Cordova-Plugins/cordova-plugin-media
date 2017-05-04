@@ -1,0 +1,37 @@
+# Property of Four Js*
+# (c) Copyright Four Js 2017, 2017. All Rights Reserved.
+# * Trademark of Four Js Development Tools Europe Ltd
+#   in the United States and elsewhere
+# 
+# Four Js and its suppliers do not warrant or guarantee that these
+# samples are accurate and suitable for your purposes. Their inclusion is
+# purely for information purposes only.
+
+LAYOUT
+GRID
+{
+<G                              >
+[slider                         ]
+["At":at    : :"Duration":dura  ]
+[   :pa:ar:re:ro:pl:po:st:      ]
+[meter                          ]
+
+<G addinfo                      >
+["State:":state                 ]
+}
+END
+ATTRIBUTES
+SLIDER slider=FORMONLY.slider,VALUEMAX=100;
+at=FORMONLY.at;
+dura=FORMONLY.duration;
+BUTTON pa:pause,IMAGE="fa-pause";
+BUTTON ar:pause_on,IMAGE="fa-pause",STYLE="_on",HIDDEN;
+BUTTON re:record,IMAGE="fa-circle",STYLE="recordred";
+BUTTON ro:record_on,IMAGE="fa-circle",STYLE="record_on",HIDDEN;
+BUTTON pl:play,IMAGE="fa-play";
+BUTTON po:play_on,IMAGE="fa-play",STYLE="_on",HIDDEN;
+BUTTON st:stop,IMAGE="fa-stop";
+--WEBCOMPONENT meter=FORMONLY.meter,COMPONENTTYPE="meter";
+PROGRESSBAR meter=FORMONLY.meter,VALUEMAX=100;
+GROUP addinfo:addinfo,TEXT="Additional Info";
+state=FORMONLY.state;
