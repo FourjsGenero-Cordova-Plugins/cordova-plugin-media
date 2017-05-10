@@ -20,6 +20,12 @@ IDENTITY='(59W7RY75ZU)'
 PROVISIONING_PROFILE=/Users/leo/Library/MobileDevice/Provisioning\ Profiles/4js_wildcard
 FORMS   = $(patsubst %.per, %.42f, $(wildcard *.per))
 
+# in case you build the demo when having the plugin checked out of github 
+# then we use the fglcvdCalendar.42m in the fgl dir of the plugin
+ifneq ($(wildcard ../../fgl),)
+export FGLLDPATH    = ../../fgl
+endif
+
 
 #include the generic Makefile-gmi with a lot of targets
 ifndef GMIDIR

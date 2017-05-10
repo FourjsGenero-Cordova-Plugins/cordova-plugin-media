@@ -16,11 +16,55 @@
 <td>Prev</td>
 <td>Next</td>
 </tr></table>
-<br><small>Summary: <a href="#function_summary">FUNCTION</a></small><hr>
+<br><small>Summary: <a href="#type_summary">TYPE</a> <a href="#constant_summary">CONSTANT</a> <a href="#variable_summary">VARIABLE</a> <a href="#function_summary">FUNCTION</a></small><hr>
 <b>fgl</b><h1>fglcdvMedia</h1>
-<p> Genero 4GL wrapper around the Cordova Media plugin.
- The github url of the plugin is https://github.com/FourjsGenero/cordova-plugin-media.git</p>
-<a id="function_summary"></a><table border="1" width="100%" cellpadding="3" cellspacing="0" class="summary">
+<p> Genero 4GL wrapper around the Cordova Media plugin.</p>
+<a id="type_summary"></a><table border="1" width="100%" cellpadding="3" cellspacing="0" class="summary">
+<tr><th class="summary" colspan="1">TYPE Summary</th></tr>
+<tr><td class="summary-text">
+<b><a href="#StatusT">StatusT</a></b> util.JSONObject<br>
+</td></tr>
+<tr><td class="summary-text">
+<b><a href="#playOptionsT">playOptionsT</a></b> RECORD<br>
+</td></tr>
+</table>
+<br><a id="constant_summary"></a><table border="1" width="100%" cellpadding="3" cellspacing="0" class="summary">
+<tr><th class="summary" colspan="1">CONSTANT Summary</th></tr>
+<tr><td class="summary-text">
+<b><a href="#MEDIA_DURATION">MEDIA_DURATION</a></b> INTEGER<br>
+</td></tr>
+<tr><td class="summary-text">
+<b><a href="#MEDIA_ERROR">MEDIA_ERROR</a></b> INTEGER<br>
+</td></tr>
+<tr><td class="summary-text">
+<b><a href="#MEDIA_POSITION">MEDIA_POSITION</a></b> INTEGER<br>
+</td></tr>
+<tr><td class="summary-text">
+<b><a href="#MEDIA_STATE">MEDIA_STATE</a></b> INTEGER<br>
+</td></tr>
+<tr><td class="summary-text">
+<b><a href="#MEDIA_STATE_NONE">MEDIA_STATE_NONE</a></b> INTEGER<br>
+</td></tr>
+<tr><td class="summary-text">
+<b><a href="#MEDIA_STATE_PAUSED">MEDIA_STATE_PAUSED</a></b> INTEGER<br>
+</td></tr>
+<tr><td class="summary-text">
+<b><a href="#MEDIA_STATE_RUNNING">MEDIA_STATE_RUNNING</a></b> INTEGER<br>
+</td></tr>
+<tr><td class="summary-text">
+<b><a href="#MEDIA_STATE_STARTING">MEDIA_STATE_STARTING</a></b> INTEGER<br>
+</td></tr>
+<tr><td class="summary-text">
+<b><a href="#MEDIA_STATE_STOPPED">MEDIA_STATE_STOPPED</a></b> INTEGER<br>
+</td></tr>
+</table>
+<br><a id="field_summary"></a><table border="1" width="100%" cellpadding="3" cellspacing="0" class="summary">
+<tr><th class="summary" colspan="1">VARIABLE Summary</th></tr>
+<tr><td class="summary-text">
+<b><a href="#playOptions">playOptions</a></b> <a href="#playOptionsT">playOptionsT</a><br>
+</td></tr>
+</table>
+<br><a id="function_summary"></a><table border="1" width="100%" cellpadding="3" cellspacing="0" class="summary">
 <tr><th class="summary" colspan="2">FUNCTION Summary</th></tr>
 <tr>
 <td class="summary-text"></td>
@@ -33,66 +77,66 @@
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#getCurrentAmplitudeAudio">getCurrentAmplitudeAudio</a></b>(soundId STRING) RETURNING FLOAT<br> Returns the Audio Meter level when recording.</td>
+<b><a href="#getCurrentAmplitudeAudio">getCurrentAmplitudeAudio</a></b>(soundId STRING) RETURNS FLOAT<br> Returns the Audio Meter level when recording.</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#getCurrentPositionAudio">getCurrentPositionAudio</a></b>(soundId STRING) RETURNING FLOAT<br> Does only work while playing a sound file, not while recording.</td>
+<b><a href="#getCurrentPositionAudio">getCurrentPositionAudio</a></b>(soundId STRING) RETURNS FLOAT<br> Does only work while playing a sound file, not while recording.</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#getDurationAudio">getDurationAudio</a></b>(soundId STRING) RETURNING FLOAT<br> Returns the duration for a media id, this works only if the file exists
+<b><a href="#getDurationAudio">getDurationAudio</a></b>(soundId STRING) RETURNS FLOAT<br> Returns the duration for a media id, this works only if the file exists
  and is playable</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#getDurationFromStatus">getDurationFromStatus</a></b>(mediaStatus util.JSONObject) RETURNING FLOAT<br> Returns the duration when the status message type is MEDIA_DURATION.</td>
+<b><a href="#getDurationFromStatus">getDurationFromStatus</a></b>(mediaStatus <a href="#StatusT">StatusT</a>) RETURNS FLOAT<br> Returns the duration when the status message type is MEDIA_DURATION.</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#getErrorFromStatus">getErrorFromStatus</a></b>(mediaStatus util.JSONObject) RETURNING INT,STRING<br> Returns the error code and error message 
+<b><a href="#getErrorFromStatus">getErrorFromStatus</a></b>(mediaStatus util.JSONObject) RETURNS INTEGER, STRING<br> Returns the error code and error message 
  when the status message type is MEDIA_ERROR.</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#getMediaIdFromStatus">getMediaIdFromStatus</a></b>(mediaStatus util.JSONObject) RETURNING STRING<br> Returns the mediaId causing the status event</td>
+<b><a href="#getMediaIdFromStatus">getMediaIdFromStatus</a></b>(mediaStatus <a href="#StatusT">StatusT</a>) RETURNS STRING<br> Returns the mediaId causing the status event</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#getMessageTypeFromStatus">getMessageTypeFromStatus</a></b>(mediaStatus util.JSONObject) RETURNING INT<br> Returns a message type out of the given mediaStatus</td>
+<b><a href="#getMessageTypeFromStatus">getMessageTypeFromStatus</a></b>(mediaStatus <a href="#StatusT">StatusT</a>) RETURNS INTEGER<br> Returns a message type out of the given mediaStatus</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#getNextStatus">getNextStatus</a></b>() RETURNING util.JSONObject<br> Returns the next queued status object and removes it from the internal queue.
+<b><a href="#getNextStatus">getNextStatus</a></b>() RETURNS <a href="#StatusT">StatusT</a><br> Returns the next queued status object and removes it from the internal queue.
  This object must be passed to the xxFromStatus functions</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#getPositionFromStatus">getPositionFromStatus</a></b>(mediaStatus util.JSONObject) RETURNING FLOAT<br> Returns the media position out of the given mediaStatus 
+<b><a href="#getPositionFromStatus">getPositionFromStatus</a></b>(mediaStatus <a href="#StatusT">StatusT</a>) RETURNS FLOAT<br> Returns the media position out of the given mediaStatus 
  when the status message type is MEDIA_POSITION.</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#getRecordingExtensions">getRecordingExtensions</a></b>() RETURNING DYNAMIC ARRAY OF STRING<br> Returns an array containing valid file extensions for recording</td>
+<b><a href="#getRecordingExtensions">getRecordingExtensions</a></b>() RETURNS DYNAMIC ARRAY OF STRING<br> Returns an array containing valid file extensions for recording</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#getStateFromStatus">getStateFromStatus</a></b>(mediaStatus util.JSONObject) RETURNING INT<br> Returns the media state when the status message type is MEDIA_STATE.</td>
+<b><a href="#getStateFromStatus">getStateFromStatus</a></b>(mediaStatus <a href="#StatusT">StatusT</a>) RETURNS INTEGER<br> Returns the media state when the status message type is MEDIA_STATE.</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#getStatusCount">getStatusCount</a></b>() RETURNING INT<br> Returns how many status objects have been queued</td>
+<b><a href="#getStatusCount">getStatusCount</a></b>() RETURNS INTEGER<br> Returns how many status objects have been queued</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
@@ -109,17 +153,17 @@
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#isValidRecordingExtension">isValidRecordingExtension</a></b>(extension STRING) RETURNING BOOLEAN<br> Returns if a a give file extension is a valid extension for recording</td>
+<b><a href="#isValidRecordingExtension">isValidRecordingExtension</a></b>(extension STRING) RETURNS BOOLEAN<br> Returns if a a give file extension is a valid extension for recording</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#mediaState2String">mediaState2String</a></b>(state INTEGER) RETURNING STRING<br> Returns a string description for a media state.</td>
+<b><a href="#mediaState2String">mediaState2String</a></b>(state INTEGER) RETURNS STRING<br> Returns a string description for a media state.</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#messageType2String">messageType2String</a></b>(messageType INTEGER) RETURNING STRING<br> Returns a string description for a messageType</td>
+<b><a href="#messageType2String">messageType2String</a></b>(messageType INTEGER) RETURNS STRING<br> Returns a string description for a messageType</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
@@ -166,7 +210,7 @@
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#startPlayingAudio">startPlayingAudio</a></b>(soundId STRING, playOptions RECORD)<br> starts playing a sound file
+<b><a href="#startPlayingAudio">startPlayingAudio</a></b>(soundId STRING, playOptions <a href="#playOptionsT">playOptionsT</a>)<br> starts playing a sound file
  if the playback is over, a cordovacallback is triggered
  the file for playback must have been registered with the create call
  it must exist and can have several
@@ -195,7 +239,88 @@
  Causes a cordovacallback about state change.</td>
 </tr>
 </table>
-<br><h2>Functions</h2>
+<br><h2>Types</h2>
+<a id="StatusT"> </a><h3>StatusT</h3>
+<tt>TYPE <b>StatusT</b> util.JSONObject</tt><dl>
+<dd></dd>
+<dd><dl></dl></dd>
+</dl>
+<hr>
+<a id="playOptionsT"> </a><h3>playOptionsT</h3>
+<tt>TYPE <b>playOptionsT</b> RECORD<table border="0" cellpadding="0" cellspacing="0" class="member"><tr>
+<td>    </td>
+<td><table border="0" cellpadding="0" cellspacing="0" class="member">
+<tr><td>playAudioWhenScreenIsLocked BOOLEAN</td></tr>
+<tr><td>numberOfLoops INTEGER</td></tr>
+</table></td>
+</tr></table> END RECORD</tt><dl>
+<dd></dd>
+<dd><dl></dl></dd>
+</dl>
+<hr>
+<h2>Constants</h2>
+<a id="MEDIA_DURATION"> </a><h3>MEDIA_DURATION</h3>
+<tt>CONSTANT <b>MEDIA_DURATION</b> INTEGER = 2</tt><dl>
+<dd></dd>
+<dd><dl></dl></dd>
+</dl>
+<hr>
+<a id="MEDIA_ERROR"> </a><h3>MEDIA_ERROR</h3>
+<tt>CONSTANT <b>MEDIA_ERROR</b> INTEGER = 9</tt><dl>
+<dd></dd>
+<dd><dl></dl></dd>
+</dl>
+<hr>
+<a id="MEDIA_POSITION"> </a><h3>MEDIA_POSITION</h3>
+<tt>CONSTANT <b>MEDIA_POSITION</b> INTEGER = 3</tt><dl>
+<dd></dd>
+<dd><dl></dl></dd>
+</dl>
+<hr>
+<a id="MEDIA_STATE"> </a><h3>MEDIA_STATE</h3>
+<tt>CONSTANT <b>MEDIA_STATE</b> INTEGER = 1</tt><dl>
+<dd></dd>
+<dd><dl></dl></dd>
+</dl>
+<hr>
+<a id="MEDIA_STATE_NONE"> </a><h3>MEDIA_STATE_NONE</h3>
+<tt>CONSTANT <b>MEDIA_STATE_NONE</b> INTEGER = 0</tt><dl>
+<dd></dd>
+<dd><dl></dl></dd>
+</dl>
+<hr>
+<a id="MEDIA_STATE_PAUSED"> </a><h3>MEDIA_STATE_PAUSED</h3>
+<tt>CONSTANT <b>MEDIA_STATE_PAUSED</b> INTEGER = 3</tt><dl>
+<dd></dd>
+<dd><dl></dl></dd>
+</dl>
+<hr>
+<a id="MEDIA_STATE_RUNNING"> </a><h3>MEDIA_STATE_RUNNING</h3>
+<tt>CONSTANT <b>MEDIA_STATE_RUNNING</b> INTEGER = 2</tt><dl>
+<dd></dd>
+<dd><dl></dl></dd>
+</dl>
+<hr>
+<a id="MEDIA_STATE_STARTING"> </a><h3>MEDIA_STATE_STARTING</h3>
+<tt>CONSTANT <b>MEDIA_STATE_STARTING</b> INTEGER = 1</tt><dl>
+<dd></dd>
+<dd><dl></dl></dd>
+</dl>
+<hr>
+<a id="MEDIA_STATE_STOPPED"> </a><h3>MEDIA_STATE_STOPPED</h3>
+<tt>CONSTANT <b>MEDIA_STATE_STOPPED</b> INTEGER = 4</tt><dl>
+<dd></dd>
+<dd><dl></dl></dd>
+</dl>
+<hr>
+<h2>Variables</h2>
+<a id="playOptions"> </a><h3>playOptions</h3>
+<tt>DEFINE <b>playOptions</b> <a href="#playOptionsT">playOptionsT</a></tt><dl>
+<dd></dd>
+<dd><dl></dl></dd>
+</dl>
+<hr>
+<h2>Functions</h2>
 <a id="create"> </a><h3>create</h3>
 <tt>FUNCTION <b>create</b>(soundId STRING, filename STRING)</tt><dl>
 <dd><p> Registers a fileName for a soundId to be used in several calls.
@@ -213,7 +338,7 @@
 </dl>
 <hr>
 <a id="getCurrentAmplitudeAudio"> </a><h3>getCurrentAmplitudeAudio</h3>
-<tt>FUNCTION <b>getCurrentAmplitudeAudio</b>(soundId STRING) RETURNING FLOAT</tt><dl>
+<tt>FUNCTION <b>getCurrentAmplitudeAudio</b>(soundId STRING) RETURNS FLOAT</tt><dl>
 <dd><p> Returns the Audio Meter level when recording.</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -227,7 +352,7 @@
 </dl>
 <hr>
 <a id="getCurrentPositionAudio"> </a><h3>getCurrentPositionAudio</h3>
-<tt>FUNCTION <b>getCurrentPositionAudio</b>(soundId STRING) RETURNING FLOAT</tt><dl>
+<tt>FUNCTION <b>getCurrentPositionAudio</b>(soundId STRING) RETURNS FLOAT</tt><dl>
 <dd><p> Does only work while playing a sound file, not while recording.</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -241,7 +366,7 @@
 </dl>
 <hr>
 <a id="getDurationAudio"> </a><h3>getDurationAudio</h3>
-<tt>FUNCTION <b>getDurationAudio</b>(soundId STRING) RETURNING FLOAT</tt><dl>
+<tt>FUNCTION <b>getDurationAudio</b>(soundId STRING) RETURNS FLOAT</tt><dl>
 <dd><p> Returns the duration for a media id, this works only if the file exists
  and is playable</p></dd>
 <dd><dl>
@@ -256,7 +381,7 @@
 </dl>
 <hr>
 <a id="getDurationFromStatus"> </a><h3>getDurationFromStatus</h3>
-<tt>FUNCTION <b>getDurationFromStatus</b>(mediaStatus util.JSONObject) RETURNING FLOAT</tt><dl>
+<tt>FUNCTION <b>getDurationFromStatus</b>(mediaStatus <a href="#StatusT">StatusT</a>) RETURNS FLOAT</tt><dl>
 <dd><p> Returns the duration when the status message type is MEDIA_DURATION.</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -270,7 +395,7 @@
 </dl>
 <hr>
 <a id="getErrorFromStatus"> </a><h3>getErrorFromStatus</h3>
-<tt>FUNCTION <b>getErrorFromStatus</b>(mediaStatus util.JSONObject) RETURNING INT,STRING</tt><dl>
+<tt>FUNCTION <b>getErrorFromStatus</b>(mediaStatus util.JSONObject) RETURNS INTEGER, STRING</tt><dl>
 <dd><p> Returns the error code and error message 
  when the status message type is MEDIA_ERROR.</p></dd>
 <dd><dl>
@@ -285,7 +410,7 @@
 </dl>
 <hr>
 <a id="getMediaIdFromStatus"> </a><h3>getMediaIdFromStatus</h3>
-<tt>FUNCTION <b>getMediaIdFromStatus</b>(mediaStatus util.JSONObject) RETURNING STRING</tt><dl>
+<tt>FUNCTION <b>getMediaIdFromStatus</b>(mediaStatus <a href="#StatusT">StatusT</a>) RETURNS STRING</tt><dl>
 <dd><p> Returns the mediaId causing the status event</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -299,7 +424,7 @@
 </dl>
 <hr>
 <a id="getMessageTypeFromStatus"> </a><h3>getMessageTypeFromStatus</h3>
-<tt>FUNCTION <b>getMessageTypeFromStatus</b>(mediaStatus util.JSONObject) RETURNING INT</tt><dl>
+<tt>FUNCTION <b>getMessageTypeFromStatus</b>(mediaStatus <a href="#StatusT">StatusT</a>) RETURNS INTEGER</tt><dl>
 <dd><p> Returns a message type out of the given mediaStatus</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -313,7 +438,7 @@
 </dl>
 <hr>
 <a id="getNextStatus"> </a><h3>getNextStatus</h3>
-<tt>FUNCTION <b>getNextStatus</b>() RETURNING util.JSONObject</tt><dl>
+<tt>FUNCTION <b>getNextStatus</b>() RETURNS <a href="#StatusT">StatusT</a></tt><dl>
 <dd>
 <p> Returns the next queued status object and removes it from the internal queue.
  This object must be passed to the xxFromStatus functions</p>
@@ -341,7 +466,7 @@
 </dl>
 <hr>
 <a id="getPositionFromStatus"> </a><h3>getPositionFromStatus</h3>
-<tt>FUNCTION <b>getPositionFromStatus</b>(mediaStatus util.JSONObject) RETURNING FLOAT</tt><dl>
+<tt>FUNCTION <b>getPositionFromStatus</b>(mediaStatus <a href="#StatusT">StatusT</a>) RETURNS FLOAT</tt><dl>
 <dd><p> Returns the media position out of the given mediaStatus 
  when the status message type is MEDIA_POSITION.</p></dd>
 <dd><dl>
@@ -356,7 +481,7 @@
 </dl>
 <hr>
 <a id="getRecordingExtensions"> </a><h3>getRecordingExtensions</h3>
-<tt>FUNCTION <b>getRecordingExtensions</b>() RETURNING DYNAMIC ARRAY OF STRING</tt><dl>
+<tt>FUNCTION <b>getRecordingExtensions</b>() RETURNS DYNAMIC ARRAY OF STRING</tt><dl>
 <dd><p> Returns an array containing valid file extensions for recording</p></dd>
 <dd><dl>
 <dt><b>Returns:</b></dt>
@@ -366,7 +491,7 @@
 </dl>
 <hr>
 <a id="getStateFromStatus"> </a><h3>getStateFromStatus</h3>
-<tt>FUNCTION <b>getStateFromStatus</b>(mediaStatus util.JSONObject) RETURNING INT</tt><dl>
+<tt>FUNCTION <b>getStateFromStatus</b>(mediaStatus <a href="#StatusT">StatusT</a>) RETURNS INTEGER</tt><dl>
 <dd><p> Returns the media state when the status message type is MEDIA_STATE.</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -380,7 +505,7 @@
 </dl>
 <hr>
 <a id="getStatusCount"> </a><h3>getStatusCount</h3>
-<tt>FUNCTION <b>getStatusCount</b>() RETURNING INT</tt><dl>
+<tt>FUNCTION <b>getStatusCount</b>() RETURNS INTEGER</tt><dl>
 <dd><p> Returns how many status objects have been queued</p></dd>
 <dd><dl>
 <dt><b>Returns:</b></dt>
@@ -412,7 +537,7 @@
 </dl>
 <hr>
 <a id="isValidRecordingExtension"> </a><h3>isValidRecordingExtension</h3>
-<tt>FUNCTION <b>isValidRecordingExtension</b>(extension STRING) RETURNING BOOLEAN</tt><dl>
+<tt>FUNCTION <b>isValidRecordingExtension</b>(extension STRING) RETURNS BOOLEAN</tt><dl>
 <dd><p> Returns if a a give file extension is a valid extension for recording</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -426,7 +551,7 @@
 </dl>
 <hr>
 <a id="mediaState2String"> </a><h3>mediaState2String</h3>
-<tt>FUNCTION <b>mediaState2String</b>(state INTEGER) RETURNING STRING</tt><dl>
+<tt>FUNCTION <b>mediaState2String</b>(state INTEGER) RETURNS STRING</tt><dl>
 <dd><p> Returns a string description for a media state.</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -441,7 +566,7 @@
 </dl>
 <hr>
 <a id="messageType2String"> </a><h3>messageType2String</h3>
-<tt>FUNCTION <b>messageType2String</b>(messageType INTEGER) RETURNING STRING</tt><dl>
+<tt>FUNCTION <b>messageType2String</b>(messageType INTEGER) RETURNS STRING</tt><dl>
 <dd><p> Returns a string description for a messageType</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -539,7 +664,7 @@
 </dl>
 <hr>
 <a id="startPlayingAudio"> </a><h3>startPlayingAudio</h3>
-<tt>FUNCTION <b>startPlayingAudio</b>(soundId STRING, playOptions RECORD)</tt><dl>
+<tt>FUNCTION <b>startPlayingAudio</b>(soundId STRING, playOptions <a href="#playOptionsT">playOptionsT</a>)</tt><dl>
 <dd><p> starts playing a sound file
  if the playback is over, a cordovacallback is triggered
  the file for playback must have been registered with the create call

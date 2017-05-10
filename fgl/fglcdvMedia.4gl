@@ -7,7 +7,6 @@
 #       https://www.apache.org/licenses/LICENSE-2.0
 
 #+ Genero 4GL wrapper around the Cordova Media plugin.
-#+ The github url of the plugin is https://github.com/leopatras/cordova-plugin-media.git
 IMPORT util
 IMPORT os
 PUBLIC CONSTANT MEDIA_STATE = 1
@@ -29,10 +28,13 @@ DEFINE m_states DYNAMIC ARRAY OF STRING
 DEFINE m_hash util.Hash
 DEFINE m_statusarr DYNAMIC ARRAY OF util.JSONObject
 
-TYPE playOptionsT RECORD
+PUBLIC TYPE StatusT util.JSONObject
+
+PUBLIC TYPE playOptionsT RECORD
   playAudioWhenScreenIsLocked BOOLEAN,
   numberOfLoops INT
 END RECORD
+
 #helper to avoid the need to define this record in user code if there is just one player
 PUBLIC DEFINE playOptions playOptionsT
 
@@ -49,7 +51,7 @@ END FUNCTION
 #+ @param messageType can be one of MEDIA_STATE, MEDIA_DURATION,MEDIA_POSITION,MEDIA_ERROR
 #+ @returnType STRING
 #+ @return "MEDIA_STATE", "MEDIA_DURATION", "MEDIA_POSITION", Or "MEDIA_ERROR"
-PUBLIC FUNCTION messageType2String(messageType INT)
+PUBLIC FUNCTION messageType2String(messageType INT) RETURNS STRING
   CASE messageType
     WHEN MEDIA_STATE RETURN "MEDIA_STATE"
     WHEN MEDIA_DURATION RETURN "MEDIA_DURATION"
@@ -64,7 +66,7 @@ END FUNCTION
 #+ MEDIA_STATE_RUNNING,MEDIA_STATE_PAUSED, MEDIA_STATE_STOPPED
 #+ @returnType STRING
 #+ @return "None", "Starting", "Running", "Paused", Or "Stopped"
-PUBLIC FUNCTION mediaState2String(state INT)
+PUBLIC FUNCTION mediaState2String(state INT) RETURNS STRING
   LET state=state+1 --4GL starts with 1
   IF state>=1 AND state<=m_states.getLength() THEN
     RETURN m_states[state]
@@ -176,10 +178,9 @@ PUBLIC FUNCTION resumeRecordingAudio(soundId STRING)
 END FUNCTION
 
 #+ Does only work while playing a sound file, not while recording.
-#+ @returnType FLOAT
 #+ @return the elapsed time
 #+ @param soundId id used to start the playback
-PUBLIC FUNCTION getCurrentPositionAudio(soundId STRING) --does only work in play mode
+PUBLIC FUNCTION getCurrentPositionAudio(soundId STRING) RETURNS FLOAT
    DEFINE position FLOAT
    CALL ui.interface.frontcall(CDV,_CALL,
          [MEDIA,"getCurrentPositionAudio",soundId],[position])
@@ -188,10 +189,9 @@ PUBLIC FUNCTION getCurrentPositionAudio(soundId STRING) --does only work in play
 END FUNCTION
 
 #+ Returns the Audio Meter level when recording.
-#+ @returnType FLOAT
 #+ @return a normalized value between 0.0 and 1.0
 #+ @param soundId id used to start the recording
-PUBLIC FUNCTION getCurrentAmplitudeAudio(soundId STRING) 
+PUBLIC FUNCTION getCurrentAmplitudeAudio(soundId STRING) RETURNS FLOAT
    DEFINE amplitude FLOAT 
    CALL ui.Interface.frontCall(CDV,_CALL,
      [Media,"getCurrentAmplitudeAudio",soundId],[amplitude])
@@ -229,9 +229,8 @@ END FUNCTION
 #+ Returns the duration for a media id, this works only if the file exists
 #+ and is playable
 #+ @param soundId id registered with the @see create() function with an existing file name
-#+ @returnType FLOAT
 #+ @return duration of the file
-PUBLIC FUNCTION getDurationAudio(soundId STRING) 
+PUBLIC FUNCTION getDurationAudio(soundId STRING) RETURNS FLOAT
   DEFINE fileName STRING
   DEFINE duration FLOAT
   CALL m_hash.get(soundId,filename)
@@ -273,13 +272,12 @@ END FUNCTION
 #+ Returns how many status objects have been queued
 #+ @returnType INT
 #+ @return count of objects
-PUBLIC FUNCTION getStatusCount()
+PUBLIC FUNCTION getStatusCount() RETURNS INT
   RETURN m_statusarr.getLength()
 END FUNCTION
 
 #+ Returns the next queued status object and removes it from the internal queue.
 #+ This object must be passed to the xxFromStatus functions
-#+ @returnType util.JSONObject
 #+ @return a status object (it can be treated as a kind of opaque handle, you should never access it directly)
 #+
 #+ @code
@@ -296,7 +294,7 @@ END FUNCTION
 #+     WHEN fglcdvMedia.MEDIA_ERROR
 #+       CALL fglcdvMedia.getErrorFromStatus(mediaStatus) RETURNING code,message
 #+ END WHILE
-PUBLIC FUNCTION getNextStatus()
+PUBLIC FUNCTION getNextStatus() RETURNS StatusT
   DEFINE st util.JSONObject
   IF m_statusarr.getLength()==0 THEN
     RETURN NULL
@@ -307,29 +305,26 @@ PUBLIC FUNCTION getNextStatus()
 END FUNCTION
 
 #+ Returns a message type out of the given mediaStatus
-#+ @returnType INT
 #+ @return MEDIA_STATE,MEDIA_DURATION,MEDIA_POSITION or MEDIA_ERROR
 #+
 #+ @param mediaStatus (pass the return value of getNextStatus())
-PUBLIC FUNCTION getMessageTypeFromStatus(mediaStatus util.JSONObject)
+PUBLIC FUNCTION getMessageTypeFromStatus(mediaStatus StatusT) RETURNS INT
   DEFINE msgType INT
   LET msgType=mediaStatus.get("msgType")
   RETURN msgType
 END FUNCTION
 
 #+ Returns the mediaId causing the status event
-#+ @returnType STRING
 #+ @return a mediaId used for recording of playing
 #+ @param mediaStatus (pass the return value of getNextStatus())
-PUBLIC FUNCTION getMediaIdFromStatus(mediaStatus util.JSONObject)
+PUBLIC FUNCTION getMediaIdFromStatus(mediaStatus StatusT) RETURNS STRING
   RETURN mediaStatus.get("id")
 END FUNCTION
 
 #+ Returns the media state when the status message type is MEDIA_STATE.
-#+ @returnType INT
 #+ @return  MEDIA_STATE_NONE,MEDIA_STATE_STARTING,MEDIA_STATE_RUNNING, MEDIA_STATE_PAUSED,MEDIA_STATE_STOPPED
 #+ @param mediaStatus (pass the return value of getNextStatus())
-PUBLIC FUNCTION getStateFromStatus(mediaStatus util.JSONObject)
+PUBLIC FUNCTION getStateFromStatus(mediaStatus StatusT) RETURNS INT
   DEFINE state INT
   LET state=mediaStatus.get("value")
   DISPLAY "media state:",mediaState2String(state)
@@ -338,9 +333,8 @@ END FUNCTION
 
 #+ Returns the duration when the status message type is MEDIA_DURATION.
 #+ @return returns a duration out of the given mediaStatus
-#+ @returnType FLOAT
 #+ @param mediaStatus (pass the return value of getNextStatus())
-PUBLIC FUNCTION getDurationFromStatus(mediaStatus util.JSONObject)
+PUBLIC FUNCTION getDurationFromStatus(mediaStatus StatusT) RETURNS FLOAT
   DEFINE duration FLOAT 
   -- for ex. { "status": { "msgType":2 ,"value":4.0 }}
   LET duration=mediaStatus.get("value")
@@ -350,10 +344,9 @@ END FUNCTION
 
 #+ Returns the media position out of the given mediaStatus 
 #+ when the status message type is MEDIA_POSITION.
-#+ @returnType FLOAT
 #+ @return returns a media position out of the given mediaStatus
 #+ @param mediaStatus (pass the return value of getNextStatus())
-PUBLIC FUNCTION getPositionFromStatus(mediaStatus util.JSONObject)
+PUBLIC FUNCTION getPositionFromStatus(mediaStatus StatusT) RETURNS FLOAT
   DEFINE position FLOAT 
   -- for ex. { "status": { "msgType":3 ,"value":0.0 }}
   LET position=mediaStatus.get("value")
@@ -362,10 +355,9 @@ END FUNCTION
 
 #+ Returns the error code and error message 
 #+ when the status message type is MEDIA_ERROR.
-#+ @returnType INT,STRING
 #+ @return an error code and an error message
 #+ @param mediaStatus pass the return value of getNextStatus()
-PUBLIC FUNCTION getErrorFromStatus(mediaStatus util.JSONObject)
+PUBLIC FUNCTION getErrorFromStatus(mediaStatus util.JSONObject) RETURNS INT,STRING
   DEFINE err util.JSONObject
   DEFINE code INT
   DEFINE message STRING
@@ -377,9 +369,8 @@ PUBLIC FUNCTION getErrorFromStatus(mediaStatus util.JSONObject)
 END FUNCTION
 
 #+ Returns an array containing valid file extensions for recording
-#+ @returnType DYNAMIC ARRAY OF STRING
 #+ @return ["aac"] for GMA and ["wav","m4a"] for GMI
-PUBLIC FUNCTION getRecordingExtensions()
+PUBLIC FUNCTION getRecordingExtensions() RETURNS DYNAMIC ARRAY OF STRING
   DEFINE exts DYNAMIC ARRAY OF STRING
   CASE ui.Interface.getFrontEndName()
     WHEN "GMI" 
@@ -392,10 +383,9 @@ PUBLIC FUNCTION getRecordingExtensions()
 END FUNCTION
 
 #+ Returns if a a give file extension is a valid extension for recording
-#+ @param file extension such as "m4a" or "aac"
-#+ @returnType BOOLEAN
+#+ @param extension extension such as "m4a" or "aac"
 #+ @return TRUE if the extension is usable for recording, FALSE otherwise
-PUBLIC FUNCTION isValidRecordingExtension(extension STRING)
+PUBLIC FUNCTION isValidRecordingExtension(extension STRING) RETURNS BOOLEAN
    DEFINE validExtensions DYNAMIC ARRAY OF STRING
    LET validExtensions=getRecordingExtensions()
    RETURN validExtensions.search("*",extension)<>0 
