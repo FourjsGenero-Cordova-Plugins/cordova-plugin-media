@@ -37,7 +37,6 @@ MAIN
   DEFINE slider,prevState INT
   LET int_flag=FALSE
   CALL fglcdvMedia.init()
-  CALL startRecordingAudio(SOUNDID)
 
   OPEN FORM f FROM "main"
   DISPLAY FORM f
@@ -382,8 +381,4 @@ FUNCTION processCallback()
     END CASE
   END WHILE
 END FUNCTION
-
---FUNCTION startPlayingAudio(i INT)
---  DISPLAY "----startPlayingAudio----"
---END FUNCTION
 
