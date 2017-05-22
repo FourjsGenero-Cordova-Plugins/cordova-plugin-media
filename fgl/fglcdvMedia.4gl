@@ -357,7 +357,7 @@ END FUNCTION
 #+ when the status message type is MEDIA_ERROR.
 #+ @return an error code and an error message
 #+ @param mediaStatus pass the return value of getNextStatus()
-PUBLIC FUNCTION getErrorFromStatus(mediaStatus util.JSONObject) RETURNS INT,STRING
+PUBLIC FUNCTION getErrorFromStatus(mediaStatus util.JSONObject) RETURNS (INT,STRING)
   DEFINE err util.JSONObject
   DEFINE code INT
   DEFINE message STRING
