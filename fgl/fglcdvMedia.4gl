@@ -227,7 +227,7 @@ PUBLIC FUNCTION seekToAudio(soundId STRING,position INT)
 END FUNCTION
 
 #+ Returns the duration for a media id, this works only if the file exists
-#+ and is playable
+#+ and is playable.
 #+ @param soundId id registered with the @see create() function with an existing file name
 #+ @return duration of the file
 PUBLIC FUNCTION getDurationAudio(soundId STRING) RETURNS FLOAT
