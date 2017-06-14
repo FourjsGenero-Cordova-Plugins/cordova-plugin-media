@@ -38,7 +38,7 @@ END RECORD
 #helper to avoid the need to define this record in user code if there is just one player
 PUBLIC DEFINE playOptions playOptionsT
 
-#+ inits the plugin
+#+ Initializes the plugin
 #+ must be called prior other calls
 PUBLIC FUNCTION init()
   CALL util.JSON.parse(MEDIA_STATE_MSG,m_states)
@@ -78,13 +78,12 @@ PRIVATE FUNCTION messageChannel()
 END FUNCTION
 
 #+ Registers a fileName for a soundId to be used in several calls.
-#+ For the most applications its sufficient to create exactly one soundId.
-#+ Only if multiple audio sources need to be played simultaneously, multiple
-#+ soundId's are needed.
-#+ @param soundId to be used in startXXAudio, stopXXAudio etc
+#+ For most applications, one soundId is sufficient.
+#+ Multiple soundIds are needed only if multiple audio sources need to be played simultaneously.
+#+ @param soundId to be used in startXXAudio, stopXXAudio, etc.
 #+ @param filename file for playing or recording
-#+ one and the same soundId can be used for recording and playing if recording and playing is done exclusively
-#+ the parameter can also be an http(s) URL for playing
+#+ One and the same soundId can be used for recording and playing if recording and playing is done exclusively.
+#+ The parameter can also be an http(s) URL for playing.
 PUBLIC FUNCTION create(soundId STRING,filename STRING)
   LET m_hash[soundId]=filename
   --we must not call create if the file does not yet exist (GMI)
@@ -93,8 +92,8 @@ PUBLIC FUNCTION create(soundId STRING,filename STRING)
   END IF
 END FUNCTION
 
-#+ releases resources associated with a soundId (filename,players,internal recording buffers)
-#+ @param soundId must have been created before
+#+ Releases resources associated with a soundId (filename, players, internal recording buffers)
+#+ @param soundId must be already created.
 PUBLIC FUNCTION release(soundId STRING)
   DEFINE method STRING
   --Android: returns a result, IOS: does not return a result
@@ -103,11 +102,11 @@ PUBLIC FUNCTION release(soundId STRING)
   CALL m_hash.remove(soundId)
 END FUNCTION
 
-#+ starts playing a sound file
-#+ if the playback is over, a cordovacallback is triggered
-#+ the file for playback must have been registered with the create call
-#+ it must exist and can have several
-#+ extensions depending on the platform
+#+ Starts playing a sound file.
+#+ If the playback is finished, a cordovacallback is triggered.
+#+ The file for playback must have been registered with the create call.
+#+ It must exist and can have several
+#+ extensions depending on the platform.
 #+ @param soundId registered with the "create" call
 #+ @param playOptions see playOptionsT
 PUBLIC FUNCTION startPlayingAudio(soundId STRING,playOptions playOptionsT)
@@ -120,7 +119,7 @@ END FUNCTION
 
 #+ Pauses playing audio.
 #+ Causes a cordovacallback about state change.
-#+ Resume playing with startPlayingAudio (in opposite to resumeRecordingAudio).
+#+ Resume playing with startPlayingAudio (in opposition to resumeRecordingAudio).
 #+ @param soundId references the sound started with startPlayingAudio
 PUBLIC FUNCTION pausePlayingAudio(soundId STRING)
   CALL ui.interface.frontcall(CDV,CALLWOW,
@@ -138,7 +137,7 @@ END FUNCTION
 #+ Starts recording to file.
 #+ Possible extensions on IOS: .wav and .mp4 , on Android: .mp3 and .aac .
 #+ The recording file name was specified using the create() call.
-#+ In case it exists it will be overwritten. 
+#+ If it exists, it will be overwritten. 
 #+ The directory for the file must exist.
 #+ Causes a cordovacallback about state change.
 #+ @param soundId unique identfier to reference the recording sound later on
@@ -151,7 +150,7 @@ END FUNCTION
 
 #+ Stops recording.
 #+ Causes a cordovacallback about state change.
-#+ @param soundId id used to start the recording
+#+ @param soundId id used to start the recording.
 PUBLIC FUNCTION stopRecordingAudio(soundId STRING)
   DISPLAY "stopRecording"
   CALL ui.interface.frontcall(CDV,CALLWOW,
@@ -161,7 +160,7 @@ END FUNCTION
 #+ Pauses recording.
 #+ Resume recording with resumeRecordingAudio().
 #+ Causes a cordovacallback about state change.
-#+ @param soundId id used to start the recording
+#+ @param soundId id used to start the recording.
 PUBLIC FUNCTION pauseRecordingAudio(soundId STRING)
   CALL ui.interface.frontcall(CDV,CALLWOW,
           [MEDIA,"pauseRecordingAudio",soundId],[])
@@ -169,15 +168,15 @@ END FUNCTION
 
 #+ Resumes recording.
 #+ Causes a cordovacallback about state change.
-#+ @param soundId id used to start the recording
+#+ @param soundId id used to start the recording.
 PUBLIC FUNCTION resumeRecordingAudio(soundId STRING)
   CALL ui.interface.frontcall(CDV,CALLWOW,
           [MEDIA,"resumeRecordingAudio",soundId],[])
 END FUNCTION
 
 #+ Only works while playing a sound file, not while recording.
-#+ @return the elapsed time
-#+ @param soundId id used to start the playback
+#+ @return the elapsed time.
+#+ @param soundId id used to start the playback.
 PUBLIC FUNCTION getCurrentPositionAudio(soundId STRING) RETURNS FLOAT
    DEFINE position FLOAT
    CALL ui.interface.frontcall(CDV,_CALL,
@@ -188,7 +187,7 @@ END FUNCTION
 
 #+ Returns the Audio Meter level when recording.
 #+ @return a normalized value between 0.0 and 1.0
-#+ @param soundId id used to start the recording
+#+ @param soundId id used to start the recording.
 PUBLIC FUNCTION getCurrentAmplitudeAudio(soundId STRING) RETURNS FLOAT
    DEFINE amplitude FLOAT 
    CALL ui.Interface.frontCall(CDV,_CALL,
@@ -197,7 +196,7 @@ PUBLIC FUNCTION getCurrentAmplitudeAudio(soundId STRING) RETURNS FLOAT
 END FUNCTION
 
 #+ Sets the audio volume.
-#+ @param soundId id used to start the playback
+#+ @param soundId id used to start the playback.
 #+ @param volume range 0.0 to 1.0
 PUBLIC FUNCTION setVolume(soundId STRING,volume FLOAT) 
    CALL ui.Interface.frontCall(CDV,CALLWOW,
@@ -205,7 +204,7 @@ PUBLIC FUNCTION setVolume(soundId STRING,volume FLOAT)
 END FUNCTION
 
 #+ Sets the playback rate: only available in IOS.
-#+ @param soundId id used to start the playback
+#+ @param soundId id used to start the playback.
 #+ @param rate range 0.0 to 1.0
 PUBLIC FUNCTION setRate(soundId STRING,rate FLOAT) 
    IF ui.Interface.getFrontEndName()=="GMI" THEN
@@ -214,20 +213,20 @@ PUBLIC FUNCTION setRate(soundId STRING,rate FLOAT)
    END IF
 END FUNCTION
 
-#+ Seeks to a position in the audio stream.
+#+ Seeks a position in the audio stream.
 #+ Only available for playback.
-#+ May causes a cordovacallback about state change.
-#+ @param soundId id used to start the playback
-#+ @param position milliseconds since start
+#+ May cause a cordovacallback about state change.
+#+ @param soundId id used to start the playback.
+#+ @param position milliseconds since start.
 PUBLIC FUNCTION seekToAudio(soundId STRING,position INT) 
    CALL ui.Interface.frontCall(CDV,CALLWOW,
        [Media,"seekToAudio",soundId,position],[])
 END FUNCTION
 
-#+ Returns the duration for a media id, this works only if the file exists
-#+ and is playable.
-#+ @param soundId id registered with the @see create() function with an existing file name
-#+ @return duration of the file
+#+ Returns the duration for a media id. 
+#+ This works only if the file exists and is playable.
+#+ @param soundId id registered with the @see create() function with an existing file name.
+#+ @return duration of the file.
 PUBLIC FUNCTION getDurationAudio(soundId STRING) RETURNS FLOAT
   DEFINE fileName STRING
   DEFINE duration FLOAT
@@ -267,7 +266,7 @@ PRIVATE FUNCTION parseJSON(result STRING)
   END FOR
 END FUNCTION
 
-#+ Returns how many status objects have been queued
+#+ Returns how many status objects have been queued.
 #+ @returnType INT
 #+ @return count of objects
 PUBLIC FUNCTION getStatusCount() RETURNS INT
@@ -275,8 +274,8 @@ PUBLIC FUNCTION getStatusCount() RETURNS INT
 END FUNCTION
 
 #+ Returns the next queued status object and removes it from the internal queue.
-#+ This object must be passed to the xxFromStatus functions
-#+ @return a status object (it can be treated as a kind of opaque handle, you should never access it directly)
+#+ This object must be passed to the xxFromStatus functions.
+#+ @return a status object (it can be treated as a kind of opaque handle, you should never access it directly).
 #+
 #+ @code
 #+ WHILE (mediaStatus:=getNextStatus()) IS NOT NULL
@@ -302,7 +301,7 @@ PUBLIC FUNCTION getNextStatus() RETURNS StatusT
   RETURN st
 END FUNCTION
 
-#+ Returns a message type out of the given mediaStatus
+#+ Returns a message type from the given mediaStatus.
 #+ @return MEDIA_STATE,MEDIA_DURATION,MEDIA_POSITION or MEDIA_ERROR
 #+
 #+ @param mediaStatus (pass the return value of getNextStatus())
@@ -312,8 +311,8 @@ PUBLIC FUNCTION getMessageTypeFromStatus(mediaStatus StatusT) RETURNS INT
   RETURN msgType
 END FUNCTION
 
-#+ Returns the mediaId causing the status event
-#+ @return a mediaId used for recording of playing
+#+ Returns the mediaId causing the status event.
+#+ @return a mediaId used for recording of playing.
 #+ @param mediaStatus (pass the return value of getNextStatus())
 PUBLIC FUNCTION getMediaIdFromStatus(mediaStatus StatusT) RETURNS STRING
   RETURN mediaStatus.get("id")
@@ -330,7 +329,7 @@ PUBLIC FUNCTION getStateFromStatus(mediaStatus StatusT) RETURNS INT
 END FUNCTION
 
 #+ Returns the duration when the status message type is MEDIA_DURATION.
-#+ @return returns a duration out of the given mediaStatus
+#+ @return returns a duration out of the given mediaStatus.
 #+ @param mediaStatus (pass the return value of getNextStatus())
 PUBLIC FUNCTION getDurationFromStatus(mediaStatus StatusT) RETURNS FLOAT
   DEFINE duration FLOAT 
@@ -342,7 +341,7 @@ END FUNCTION
 
 #+ Returns the media position out of the given mediaStatus 
 #+ when the status message type is MEDIA_POSITION.
-#+ @return returns a media position out of the given mediaStatus
+#+ @return returns a media position out of the given mediaStatus.
 #+ @param mediaStatus (pass the return value of getNextStatus())
 PUBLIC FUNCTION getPositionFromStatus(mediaStatus StatusT) RETURNS FLOAT
   DEFINE position FLOAT 
@@ -353,7 +352,7 @@ END FUNCTION
 
 #+ Returns the error code and error message 
 #+ when the status message type is MEDIA_ERROR.
-#+ @return an error code and an error message
+#+ @return an error code and an error message.
 #+ @param mediaStatus pass the return value of getNextStatus()
 PUBLIC FUNCTION getErrorFromStatus(mediaStatus util.JSONObject) RETURNS (INT,STRING)
   DEFINE err util.JSONObject
@@ -366,7 +365,7 @@ PUBLIC FUNCTION getErrorFromStatus(mediaStatus util.JSONObject) RETURNS (INT,STR
   RETURN code,message
 END FUNCTION
 
-#+ Returns an array containing valid file extensions for recording
+#+ Returns an array containing valid file extensions for recording.
 #+ @return ["aac"] for GMA and ["wav","m4a"] for GMI
 PUBLIC FUNCTION getRecordingExtensions() RETURNS DYNAMIC ARRAY OF STRING
   DEFINE exts DYNAMIC ARRAY OF STRING
@@ -380,7 +379,7 @@ PUBLIC FUNCTION getRecordingExtensions() RETURNS DYNAMIC ARRAY OF STRING
   RETURN exts
 END FUNCTION
 
-#+ Returns if a a give file extension is a valid extension for recording
+#+ Returns TRUE if a given file extension is a valid extension for recording
 #+ @param extension extension such as "m4a" or "aac"
 #+ @return TRUE if the extension is usable for recording, FALSE otherwise
 PUBLIC FUNCTION isValidRecordingExtension(extension STRING) RETURNS BOOLEAN
