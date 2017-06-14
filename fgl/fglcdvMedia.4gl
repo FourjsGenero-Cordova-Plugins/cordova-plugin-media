@@ -25,7 +25,7 @@ CONSTANT _CALL="call"
 CONSTANT CDV="cordova"
 CONSTANT MEDIA="Media"
 DEFINE m_states DYNAMIC ARRAY OF STRING
-DEFINE m_hash util.Hash
+DEFINE m_hash DICTIONARY OF STRING
 DEFINE m_statusarr DYNAMIC ARRAY OF util.JSONObject
 
 PUBLIC TYPE StatusT util.JSONObject
@@ -41,8 +41,6 @@ PUBLIC DEFINE playOptions playOptionsT
 #+ inits the plugin
 #+ must be called prior other calls
 PUBLIC FUNCTION init()
-  DEFINE s STRING
-  LET m_hash=util.Hash.create(s)
   CALL util.JSON.parse(MEDIA_STATE_MSG,m_states)
   CALL messageChannel()
 END FUNCTION
@@ -88,7 +86,7 @@ END FUNCTION
 #+ one and the same soundId can be used for recording and playing if recording and playing is done exclusively
 #+ the parameter can also be an http(s) URL for playing
 PUBLIC FUNCTION create(soundId STRING,filename STRING)
-  CALL m_hash.put(soundId,filename)
+  LET m_hash[soundId]=filename
   --we must not call create if the file does not yet exist (GMI)
   IF os.Path.exists(filename) OR filename.getIndexOf("http",1)==1 THEN
     CALL ui.interface.frontcall(CDV,_CALL, [MEDIA,"create",soundId,fileName],[])
@@ -114,7 +112,7 @@ END FUNCTION
 #+ @param playOptions see playOptionsT
 PUBLIC FUNCTION startPlayingAudio(soundId STRING,playOptions playOptionsT)
   DEFINE fileName STRING
-  CALL m_hash.get(soundId,filename)
+  LET filename=m_hash[soundId]
   CALL ui.interface.frontcall(CDV,CALLWOW,
         [MEDIA,"startPlayingAudio",soundId
         ,fileName,playOptions],[])
@@ -146,7 +144,7 @@ END FUNCTION
 #+ @param soundId unique identfier to reference the recording sound later on
 PUBLIC FUNCTION startRecordingAudio(soundId STRING)
   DEFINE filename STRING
-  CALL m_hash.get(soundId,filename)
+  LET filename=m_hash[soundId]
   CALL ui.interface.frontcall(CDV,CALLWOW,
            [MEDIA,"startRecordingAudio",soundId,fileName],[])  
 END FUNCTION
@@ -233,7 +231,7 @@ END FUNCTION
 PUBLIC FUNCTION getDurationAudio(soundId STRING) RETURNS FLOAT
   DEFINE fileName STRING
   DEFINE duration FLOAT
-  CALL m_hash.get(soundId,filename)
+  LET filename=m_hash[soundId]
   CALL ui.Interface.frontCall(CDV,_CALL,
        [Media,"getDurationAudio",soundId,filename],[duration])
   RETURN duration
