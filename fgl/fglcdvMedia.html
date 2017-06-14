@@ -25,7 +25,7 @@
 <b><a href="#StatusT">StatusT</a></b> util.JSONObject<br>
 </td></tr>
 <tr><td class="summary-text">
-<b><a href="#playOptionsT">playOptionsT</a></b> RECORD<br>
+<b><a href="#playOptionsT">playOptionsT</a></b> RECORD R1<br>
 </td></tr>
 </table>
 <br><a id="constant_summary"></a><table border="1" width="100%" cellpadding="3" cellspacing="0" class="summary">
@@ -70,9 +70,8 @@
 <td class="summary-text"></td>
 <td class="summary-text">
 <b><a href="#create">create</a></b>(soundId STRING, filename STRING)<br> Registers a fileName for a soundId to be used in several calls.
- For the most applications its sufficient to create exactly one soundId.
- Only if multiple audio sources need to be played simultaneously, multiple
- soundId's are needed.</td>
+ For most applications, one soundId is sufficient.
+ Multiple soundIds are needed only if multiple audio sources need to be played simultaneously.</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
@@ -82,13 +81,13 @@
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#getCurrentPositionAudio">getCurrentPositionAudio</a></b>(soundId STRING) RETURNS FLOAT<br> Does only work while playing a sound file, not while recording.</td>
+<b><a href="#getCurrentPositionAudio">getCurrentPositionAudio</a></b>(soundId STRING) RETURNS FLOAT<br> Only works while playing a sound file, not while recording.</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#getDurationAudio">getDurationAudio</a></b>(soundId STRING) RETURNS FLOAT<br> Returns the duration for a media id, this works only if the file exists
- and is playable</td>
+<b><a href="#getDurationAudio">getDurationAudio</a></b>(soundId STRING) RETURNS FLOAT<br> Returns the duration for a media id. 
+ This works only if the file exists and is playable.</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
@@ -104,18 +103,18 @@
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#getMediaIdFromStatus">getMediaIdFromStatus</a></b>(mediaStatus <a href="#StatusT">StatusT</a>) RETURNS STRING<br> Returns the mediaId causing the status event</td>
+<b><a href="#getMediaIdFromStatus">getMediaIdFromStatus</a></b>(mediaStatus <a href="#StatusT">StatusT</a>) RETURNS STRING<br> Returns the mediaId causing the status event.</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#getMessageTypeFromStatus">getMessageTypeFromStatus</a></b>(mediaStatus <a href="#StatusT">StatusT</a>) RETURNS INTEGER<br> Returns a message type out of the given mediaStatus</td>
+<b><a href="#getMessageTypeFromStatus">getMessageTypeFromStatus</a></b>(mediaStatus <a href="#StatusT">StatusT</a>) RETURNS INTEGER<br> Returns a message type from the given mediaStatus.</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
 <b><a href="#getNextStatus">getNextStatus</a></b>() RETURNS <a href="#StatusT">StatusT</a><br> Returns the next queued status object and removes it from the internal queue.
- This object must be passed to the xxFromStatus functions</td>
+ This object must be passed to the xxFromStatus functions.</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
@@ -126,7 +125,7 @@
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#getRecordingExtensions">getRecordingExtensions</a></b>() RETURNS DYNAMIC ARRAY OF STRING<br> Returns an array containing valid file extensions for recording</td>
+<b><a href="#getRecordingExtensions">getRecordingExtensions</a></b>() RETURNS DYNAMIC ARRAY OF STRING<br> Returns an array containing valid file extensions for recording.</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
@@ -136,7 +135,7 @@
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#getStatusCount">getStatusCount</a></b>() RETURNS INTEGER<br> Returns how many status objects have been queued</td>
+<b><a href="#getStatusCount">getStatusCount</a></b>() RETURNS INTEGER<br> Returns how many status objects have been queued.</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
@@ -147,13 +146,13 @@
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#init">init</a></b>()<br> inits the plugin
+<b><a href="#init">init</a></b>()<br> Initializes the plugin
  must be called prior other calls</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#isValidRecordingExtension">isValidRecordingExtension</a></b>(extension STRING) RETURNS BOOLEAN<br> Returns if a a give file extension is a valid extension for recording</td>
+<b><a href="#isValidRecordingExtension">isValidRecordingExtension</a></b>(extension STRING) RETURNS BOOLEAN<br> Returns TRUE if a given file extension is a valid extension for recording</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
@@ -170,7 +169,7 @@
 <td class="summary-text">
 <b><a href="#pausePlayingAudio">pausePlayingAudio</a></b>(soundId STRING)<br> Pauses playing audio.
  Causes a cordovacallback about state change.
- Resume playing with startPlayingAudio (in opposite to resumeRecordingAudio).</td>
+ Resume playing with startPlayingAudio (in opposition to resumeRecordingAudio).</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
@@ -182,7 +181,7 @@
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#release">release</a></b>(soundId STRING)<br> releases resources associated with a soundId (filename,players,internal recording buffers)</td>
+<b><a href="#release">release</a></b>(soundId STRING)<br> Releases resources associated with a soundId (filename, players, internal recording buffers)</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
@@ -193,9 +192,9 @@
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#seekToAudio">seekToAudio</a></b>(soundId STRING, position INTEGER)<br> Seeks to a position in the audio stream.
+<b><a href="#seekToAudio">seekToAudio</a></b>(soundId STRING, position INTEGER)<br> Seeks a position in the audio stream.
  Only available for playback.
- May causes a cordovacallback about state change.</td>
+ May cause a cordovacallback about state change.</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
@@ -210,11 +209,11 @@
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#startPlayingAudio">startPlayingAudio</a></b>(soundId STRING, playOptions <a href="#playOptionsT">playOptionsT</a>)<br> starts playing a sound file
- if the playback is over, a cordovacallback is triggered
- the file for playback must have been registered with the create call
- it must exist and can have several
- extensions depending on the platform</td>
+<b><a href="#startPlayingAudio">startPlayingAudio</a></b>(soundId STRING, playOptions <a href="#playOptionsT">playOptionsT</a>)<br> Starts playing a sound file.
+ If the playback is finished, a cordovacallback is triggered.
+ The file for playback must have been registered with the create call.
+ It must exist and can have several
+ extensions depending on the platform.</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
@@ -222,7 +221,7 @@
 <b><a href="#startRecordingAudio">startRecordingAudio</a></b>(soundId STRING)<br> Starts recording to file.
  Possible extensions on IOS: .wav and .mp4 , on Android: .mp3 and .aac .
  The recording file name was specified using the create() call.
- In case it exists it will be overwritten.
+ If it exists, it will be overwritten.
  The directory for the file must exist.
  Causes a cordovacallback about state change.</td>
 </tr>
@@ -247,7 +246,7 @@
 </dl>
 <hr>
 <a id="playOptionsT"> </a><h3>playOptionsT</h3>
-<tt>TYPE <b>playOptionsT</b> RECORD<table border="0" cellpadding="0" cellspacing="0" class="member"><tr>
+<tt>TYPE <b>playOptionsT</b> RECORD R1<table border="0" cellpadding="0" cellspacing="0" class="member"><tr>
 <td>    </td>
 <td><table border="0" cellpadding="0" cellspacing="0" class="member">
 <tr><td>playAudioWhenScreenIsLocked BOOLEAN</td></tr>
@@ -324,15 +323,14 @@
 <a id="create"> </a><h3>create</h3>
 <tt>FUNCTION <b>create</b>(soundId STRING, filename STRING)</tt><dl>
 <dd><p> Registers a fileName for a soundId to be used in several calls.
- For the most applications its sufficient to create exactly one soundId.
- Only if multiple audio sources need to be played simultaneously, multiple
- soundId's are needed.</p></dd>
+ For most applications, one soundId is sufficient.
+ Multiple soundIds are needed only if multiple audio sources need to be played simultaneously.</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
 <dd>
-<code>soundId</code> - to be used in startXXAudio, stopXXAudio etc<br><code>filename</code> - file for playing or recording
- one and the same soundId can be used for recording and playing if recording and playing is done exclusively
- the parameter can also be an http(s) URL for playing<br>
+<code>soundId</code> - to be used in startXXAudio, stopXXAudio, etc.<br><code>filename</code> - file for playing or recording
+ One and the same soundId can be used for recording and playing if recording and playing is done exclusively.
+ The parameter can also be an http(s) URL for playing.<br>
 </dd>
 </dl></dd>
 </dl>
@@ -343,7 +341,7 @@
 <dd><dl>
 <dt><b>Parameters:</b></dt>
 <dd>
-<code>soundId</code> - id used to start the recording<br>
+<code>soundId</code> - id used to start the recording.<br>
 </dd>
 <dt><b>Returns:</b></dt>
 <dd>a normalized value between 0.0 and 1.0<br>
@@ -353,29 +351,29 @@
 <hr>
 <a id="getCurrentPositionAudio"> </a><h3>getCurrentPositionAudio</h3>
 <tt>FUNCTION <b>getCurrentPositionAudio</b>(soundId STRING) RETURNS FLOAT</tt><dl>
-<dd><p> Does only work while playing a sound file, not while recording.</p></dd>
+<dd><p> Only works while playing a sound file, not while recording.</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
 <dd>
-<code>soundId</code> - id used to start the playback<br>
+<code>soundId</code> - id used to start the playback.<br>
 </dd>
 <dt><b>Returns:</b></dt>
-<dd>the elapsed time<br>
+<dd>the elapsed time.<br>
 </dd>
 </dl></dd>
 </dl>
 <hr>
 <a id="getDurationAudio"> </a><h3>getDurationAudio</h3>
 <tt>FUNCTION <b>getDurationAudio</b>(soundId STRING) RETURNS FLOAT</tt><dl>
-<dd><p> Returns the duration for a media id, this works only if the file exists
- and is playable</p></dd>
+<dd><p> Returns the duration for a media id. 
+ This works only if the file exists and is playable.</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
 <dd>
-<code>soundId</code> - id registered with the @see create() function with an existing file name<br>
+<code>soundId</code> - id registered with the @see create() function with an existing file name.<br>
 </dd>
 <dt><b>Returns:</b></dt>
-<dd>duration of the file<br>
+<dd>duration of the file.<br>
 </dd>
 </dl></dd>
 </dl>
@@ -389,7 +387,7 @@
 <code>mediaStatus</code> - (pass the return value of getNextStatus())<br>
 </dd>
 <dt><b>Returns:</b></dt>
-<dd>returns a duration out of the given mediaStatus<br>
+<dd>returns a duration out of the given mediaStatus.<br>
 </dd>
 </dl></dd>
 </dl>
@@ -404,28 +402,28 @@
 <code>mediaStatus</code> - pass the return value of getNextStatus()<br>
 </dd>
 <dt><b>Returns:</b></dt>
-<dd>an error code and an error message<br>
+<dd>an error code and an error message.<br>
 </dd>
 </dl></dd>
 </dl>
 <hr>
 <a id="getMediaIdFromStatus"> </a><h3>getMediaIdFromStatus</h3>
 <tt>FUNCTION <b>getMediaIdFromStatus</b>(mediaStatus <a href="#StatusT">StatusT</a>) RETURNS STRING</tt><dl>
-<dd><p> Returns the mediaId causing the status event</p></dd>
+<dd><p> Returns the mediaId causing the status event.</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
 <dd>
 <code>mediaStatus</code> - (pass the return value of getNextStatus())<br>
 </dd>
 <dt><b>Returns:</b></dt>
-<dd>a mediaId used for recording of playing<br>
+<dd>a mediaId used for recording of playing.<br>
 </dd>
 </dl></dd>
 </dl>
 <hr>
 <a id="getMessageTypeFromStatus"> </a><h3>getMessageTypeFromStatus</h3>
 <tt>FUNCTION <b>getMessageTypeFromStatus</b>(mediaStatus <a href="#StatusT">StatusT</a>) RETURNS INTEGER</tt><dl>
-<dd><p> Returns a message type out of the given mediaStatus</p></dd>
+<dd><p> Returns a message type from the given mediaStatus.</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
 <dd>
@@ -441,7 +439,7 @@
 <tt>FUNCTION <b>getNextStatus</b>() RETURNS <a href="#StatusT">StatusT</a></tt><dl>
 <dd>
 <p> Returns the next queued status object and removes it from the internal queue.
- This object must be passed to the xxFromStatus functions</p>
+ This object must be passed to the xxFromStatus functions.</p>
 <p>
       <span><pre> WHILE (mediaStatus:=getNextStatus()) IS NOT NULL
    LET messageType=fglcdvMedia.getMessageTypeFromStatus(mediaStatus)
@@ -460,7 +458,7 @@
 </dd>
 <dd><dl>
 <dt><b>Returns:</b></dt>
-<dd>a status object (it can be treated as a kind of opaque handle, you should never access it directly)<br>
+<dd>a status object (it can be treated as a kind of opaque handle, you should never access it directly).<br>
 </dd>
 </dl></dd>
 </dl>
@@ -475,14 +473,14 @@
 <code>mediaStatus</code> - (pass the return value of getNextStatus())<br>
 </dd>
 <dt><b>Returns:</b></dt>
-<dd>returns a media position out of the given mediaStatus<br>
+<dd>returns a media position out of the given mediaStatus.<br>
 </dd>
 </dl></dd>
 </dl>
 <hr>
 <a id="getRecordingExtensions"> </a><h3>getRecordingExtensions</h3>
 <tt>FUNCTION <b>getRecordingExtensions</b>() RETURNS DYNAMIC ARRAY OF STRING</tt><dl>
-<dd><p> Returns an array containing valid file extensions for recording</p></dd>
+<dd><p> Returns an array containing valid file extensions for recording.</p></dd>
 <dd><dl>
 <dt><b>Returns:</b></dt>
 <dd>["aac"] for GMA and ["wav","m4a"] for GMI<br>
@@ -506,7 +504,7 @@
 <hr>
 <a id="getStatusCount"> </a><h3>getStatusCount</h3>
 <tt>FUNCTION <b>getStatusCount</b>() RETURNS INTEGER</tt><dl>
-<dd><p> Returns how many status objects have been queued</p></dd>
+<dd><p> Returns how many status objects have been queued.</p></dd>
 <dd><dl>
 <dt><b>Returns:</b></dt>
 <dd>count of objects<br>
@@ -531,14 +529,14 @@
 <hr>
 <a id="init"> </a><h3>init</h3>
 <tt>FUNCTION <b>init</b>()</tt><dl>
-<dd><p> inits the plugin
+<dd><p> Initializes the plugin
  must be called prior other calls</p></dd>
 <dd><dl></dl></dd>
 </dl>
 <hr>
 <a id="isValidRecordingExtension"> </a><h3>isValidRecordingExtension</h3>
 <tt>FUNCTION <b>isValidRecordingExtension</b>(extension STRING) RETURNS BOOLEAN</tt><dl>
-<dd><p> Returns if a a give file extension is a valid extension for recording</p></dd>
+<dd><p> Returns TRUE if a given file extension is a valid extension for recording</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
 <dd>
@@ -583,7 +581,7 @@
 <tt>FUNCTION <b>pausePlayingAudio</b>(soundId STRING)</tt><dl>
 <dd><p> Pauses playing audio.
  Causes a cordovacallback about state change.
- Resume playing with startPlayingAudio (in opposite to resumeRecordingAudio).</p></dd>
+ Resume playing with startPlayingAudio (in opposition to resumeRecordingAudio).</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
 <dd>
@@ -600,18 +598,18 @@
 <dd><dl>
 <dt><b>Parameters:</b></dt>
 <dd>
-<code>soundId</code> - id used to start the recording<br>
+<code>soundId</code> - id used to start the recording.<br>
 </dd>
 </dl></dd>
 </dl>
 <hr>
 <a id="release"> </a><h3>release</h3>
 <tt>FUNCTION <b>release</b>(soundId STRING)</tt><dl>
-<dd><p> releases resources associated with a soundId (filename,players,internal recording buffers)</p></dd>
+<dd><p> Releases resources associated with a soundId (filename, players, internal recording buffers)</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
 <dd>
-<code>soundId</code> - must have been created before<br>
+<code>soundId</code> - must be already created.<br>
 </dd>
 </dl></dd>
 </dl>
@@ -623,20 +621,20 @@
 <dd><dl>
 <dt><b>Parameters:</b></dt>
 <dd>
-<code>soundId</code> - id used to start the recording<br>
+<code>soundId</code> - id used to start the recording.<br>
 </dd>
 </dl></dd>
 </dl>
 <hr>
 <a id="seekToAudio"> </a><h3>seekToAudio</h3>
 <tt>FUNCTION <b>seekToAudio</b>(soundId STRING, position INTEGER)</tt><dl>
-<dd><p> Seeks to a position in the audio stream.
+<dd><p> Seeks a position in the audio stream.
  Only available for playback.
- May causes a cordovacallback about state change.</p></dd>
+ May cause a cordovacallback about state change.</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
 <dd>
-<code>soundId</code> - id used to start the playback<br><code>position</code> - milliseconds since start<br>
+<code>soundId</code> - id used to start the playback.<br><code>position</code> - milliseconds since start.<br>
 </dd>
 </dl></dd>
 </dl>
@@ -647,7 +645,7 @@
 <dd><dl>
 <dt><b>Parameters:</b></dt>
 <dd>
-<code>soundId</code> - id used to start the playback<br><code>rate</code> - range 0.0 to 1.0<br>
+<code>soundId</code> - id used to start the playback.<br><code>rate</code> - range 0.0 to 1.0<br>
 </dd>
 </dl></dd>
 </dl>
@@ -658,18 +656,18 @@
 <dd><dl>
 <dt><b>Parameters:</b></dt>
 <dd>
-<code>soundId</code> - id used to start the playback<br><code>volume</code> - range 0.0 to 1.0<br>
+<code>soundId</code> - id used to start the playback.<br><code>volume</code> - range 0.0 to 1.0<br>
 </dd>
 </dl></dd>
 </dl>
 <hr>
 <a id="startPlayingAudio"> </a><h3>startPlayingAudio</h3>
 <tt>FUNCTION <b>startPlayingAudio</b>(soundId STRING, playOptions <a href="#playOptionsT">playOptionsT</a>)</tt><dl>
-<dd><p> starts playing a sound file
- if the playback is over, a cordovacallback is triggered
- the file for playback must have been registered with the create call
- it must exist and can have several
- extensions depending on the platform</p></dd>
+<dd><p> Starts playing a sound file.
+ If the playback is finished, a cordovacallback is triggered.
+ The file for playback must have been registered with the create call.
+ It must exist and can have several
+ extensions depending on the platform.</p></dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
 <dd>
@@ -683,7 +681,7 @@
 <dd><p> Starts recording to file.
  Possible extensions on IOS: .wav and .mp4 , on Android: .mp3 and .aac .
  The recording file name was specified using the create() call.
- In case it exists it will be overwritten.
+ If it exists, it will be overwritten.
  The directory for the file must exist.
  Causes a cordovacallback about state change.</p></dd>
 <dd><dl>
@@ -713,7 +711,7 @@
 <dd><dl>
 <dt><b>Parameters:</b></dt>
 <dd>
-<code>soundId</code> - id used to start the recording<br>
+<code>soundId</code> - id used to start the recording.<br>
 </dd>
 </dl></dd>
 </dl>
