@@ -175,7 +175,7 @@ PUBLIC FUNCTION resumeRecordingAudio(soundId STRING)
           [MEDIA,"resumeRecordingAudio",soundId],[])
 END FUNCTION
 
-#+ Does only work while playing a sound file, not while recording.
+#+ Only works while playing a sound file, not while recording.
 #+ @return the elapsed time
 #+ @param soundId id used to start the playback
 PUBLIC FUNCTION getCurrentPositionAudio(soundId STRING) RETURNS FLOAT
