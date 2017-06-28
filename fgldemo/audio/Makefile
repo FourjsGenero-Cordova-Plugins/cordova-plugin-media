@@ -14,7 +14,7 @@ BUNDLE_IDENTIFIER   = com.4js.audio
 APPNAME             = Audio
 TARGET              = simulator
 MODE                = debug
-BUILD_FGL           = yes
+BUILD_FGL           = no
 FGLLDPATH           = ../../lib
 IDENTITY='(59W7RY75ZU)'
 PROVISIONING_PROFILE=/Users/leo/Library/MobileDevice/Provisioning\ Profiles/4js_wildcard
@@ -26,6 +26,16 @@ ifneq ($(wildcard ../../fgl),)
 export FGLLDPATH    = ../../fgl
 endif
 
+MODULES  = $(patsubst %.4gl, %.42m, $(wildcard *.4gl))
+FORMS    = $(patsubst %.per, %.42f, $(wildcard *.per))
+
+%.42m: %.4gl
+	fglcomp -M $*
+
+%.42f: %.per
+	fglform -M $*
+
+all:: $(MODULES) $(FORMS)
 
 #include the generic Makefile-gmi with a lot of targets
 ifndef GMIDIR
@@ -37,10 +47,23 @@ MAKEFILE_GMI=$(shell GMIDIR="$(GMIDIR)";echo $${GMIDIR// /\\ })/lib/Makefile-gmi
 %.42m: %.4gl 
 	FGLLDPATH=$(FGLLDPATH) fglcomp -M -W all $<
 
-USER_EXTENSION_LIBS = $(GMIDIR)/lib/cordova/CDVMedia.a $(GMIDIR)/lib/cordova/CDVFile.a $(GMIDIR)/lib/cordova/GeneroTestPlugin.a
+# temporary workaround the transition from CDV prefixed plugin lib names to
+# github lib names
 
+MEDIA=$(shell GMIDIR="$(GMIDIR)";echo $${GMIDIR// /\\ })/lib/cordova/CDVMedia.a
+$(warning $(wildcard $(MEDIA)))
+ifneq ($(wildcard $(MEDIA)),)
+ FILE=$(shell GMIDIR="$(GMIDIR)";echo $${GMIDIR// /\\ })/lib/cordova/CDVFile.a 
+ TESTPLUGIN=$(shell GMIDIR="$(GMIDIR)";echo $${GMIDIR// /\\ })/lib/cordova/GeneroTestPlugin.a
+else
+# new way
+ MEDIA=-lcordova-plugin-media
+ TESTPLUGIN=-lGeneroTestPlugin
+endif
 
-main.42m: $(USER_EXTENSION_LIBS) main.42f 
+USER_EXTENSION_LIBS = $(MEDIA) $(FILE) $(TESTPLUGIN)
+
+main.42m: main.42f 
 
 run: main.42m
 	FGLLDPATH=$(FGLLDPATH) fglrun main
@@ -57,5 +80,3 @@ runstream: main.42m
 
 clean::
 	rm -f *.sch *.dbs *.42*
-
-distclean::
