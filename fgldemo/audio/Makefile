@@ -12,56 +12,31 @@
 
 BUNDLE_IDENTIFIER   = com.4js.audio
 APPNAME             = Audio
-TARGET              = simulator
+DEVICE              = simulator
 MODE                = debug
 BUILD_FGL           = no
-FGLLDPATH           = ../../lib
 IDENTITY='(59W7RY75ZU)'
 PROVISIONING_PROFILE=/Users/leo/Library/MobileDevice/Provisioning\ Profiles/4js_wildcard
 FORMS   = $(patsubst %.per, %.42f, $(wildcard *.per))
 
+MEDIA=cordova-plugin-media
 # in case you build the demo when having the plugin checked out of github 
-# then we use the fglcvdCalendar.42m in the fgl dir of the plugin
+# then we use the fglcvdMedia.42m in the fgl dir of the plugin
 ifneq ($(wildcard ../../fgl),)
-export FGLLDPATH    = ../../fgl
+  MEDIA=$(CURDIR)/../..
+  FGLLDPATH=../..
 endif
 
 MODULES  = $(patsubst %.4gl, %.42m, $(wildcard *.4gl))
 FORMS    = $(patsubst %.per, %.42f, $(wildcard *.per))
 
 %.42m: %.4gl
-	fglcomp -M $*
+	FGLLDPATH=$(FGLLDPATH) fglcomp -M $*
 
 %.42f: %.per
 	fglform -M $*
 
 all:: $(MODULES) $(FORMS)
-
-#include the generic Makefile-gmi with a lot of targets
-ifndef GMIDIR
-GMIDIR=$(FGLDIR)
-endif
-MAKEFILE_GMI=$(shell GMIDIR="$(GMIDIR)";echo $${GMIDIR// /\\ })/lib/Makefile-gmi
--include $(MAKEFILE_GMI)
-
-%.42m: %.4gl 
-	FGLLDPATH=$(FGLLDPATH) fglcomp -M -W all $<
-
-# temporary workaround the transition from CDV prefixed plugin lib names to
-# github lib names
-
-MEDIA=$(shell GMIDIR="$(GMIDIR)";echo $${GMIDIR// /\\ })/lib/cordova/CDVMedia.a
-$(warning $(wildcard $(MEDIA)))
-ifneq ($(wildcard $(MEDIA)),)
- FILE=$(shell GMIDIR="$(GMIDIR)";echo $${GMIDIR// /\\ })/lib/cordova/CDVFile.a 
- TESTPLUGIN=$(shell GMIDIR="$(GMIDIR)";echo $${GMIDIR// /\\ })/lib/cordova/GeneroTestPlugin.a
-else
-# new way
- MEDIA=-lcordova-plugin-media
- TESTPLUGIN=-lGeneroTestPlugin
-endif
-
-USER_EXTENSION_LIBS = $(MEDIA) $(FILE) $(TESTPLUGIN)
 
 main.42m: main.42f 
 
@@ -77,6 +52,10 @@ runhttp: main.42m
 runstream: main.42m
 	FGLLDPATH=$(FGLLDPATH) fglrun main http://c22033-l.i.core.cdn.streamfarm.net/22033mdr/live/3087mdr_figaro/ch_classic_128.mp3
 
+gmi.install: all
+	gmibuildtool --app-name=$(APPNAME) --bundle-id=$(BUNDLE_IDENTIFIER) --provisioning=$(PROVISIONING_PROFILE) --certificate=$(IDENTITY) --device=$(DEVICE) --mode=$(MODE) --install=yes --build-cordova=$(MEDIA),GeneroTestPlugin
 
 clean::
 	rm -f *.sch *.dbs *.42*
+	rm -rf build bin distbin
+	rm -f cordovamap.txt gmi/*.a gmi/link_flags.sh *.4pwvs *.4pwdb
