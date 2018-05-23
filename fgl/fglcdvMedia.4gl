@@ -173,7 +173,7 @@ END FUNCTION
 #+
 #+ @param soundId id used to start the recording.
 PUBLIC FUNCTION stopRecordingAudio(soundId STRING)
-  DISPLAY "stopRecording"
+  --DISPLAY "stopRecording"
   CALL ui.interface.frontcall(CDV,CALLWOW,
            [MEDIA,"stopRecordingAudio",soundId],[])  
 END FUNCTION
@@ -210,7 +210,7 @@ PUBLIC FUNCTION getCurrentPositionAudio(soundId STRING) RETURNS FLOAT
    DEFINE position FLOAT
    CALL ui.interface.frontcall(CDV,_CALL,
          [MEDIA,"getCurrentPositionAudio",soundId],[position])
-   DISPLAY "position:",position
+   --DISPLAY "position:",position
    RETURN position
 END FUNCTION
 
@@ -375,7 +375,7 @@ END FUNCTION
 PUBLIC FUNCTION getStateFromStatus(mediaStatus StatusT) RETURNS INT
   DEFINE state INT
   LET state=mediaStatus.get("value")
-  DISPLAY "media state:",mediaState2String(state)
+  --DISPLAY "media state:",mediaState2String(state)
   RETURN state
 END FUNCTION
 
@@ -388,7 +388,7 @@ PUBLIC FUNCTION getDurationFromStatus(mediaStatus StatusT) RETURNS FLOAT
   DEFINE duration FLOAT 
   -- for ex. { "status": { "msgType":2 ,"value":4.0 }}
   LET duration=mediaStatus.get("value")
-  DISPLAY sfmt("duration:%1",duration)
+  --DISPLAY sfmt("duration:%1",duration)
   RETURN duration
 END FUNCTION
 
