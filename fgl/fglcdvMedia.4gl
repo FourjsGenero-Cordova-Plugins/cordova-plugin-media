@@ -6,7 +6,7 @@
 #
 #       https://www.apache.org/licenses/LICENSE-2.0
 
-#+ Genero 4GL wrapper around the Cordova Media plugin.
+#+ Genero BDL wrapper around the Cordova Media plugin.
 IMPORT util
 IMPORT os
 PUBLIC CONSTANT MEDIA_STATE = 1
@@ -67,7 +67,7 @@ END FUNCTION
 #+
 #+ @return "None", "Starting", "Running", "Paused", Or "Stopped"
 PUBLIC FUNCTION mediaState2String(state INT) RETURNS STRING
-  LET state=state+1 --4GL starts with 1
+  LET state=state+1 --BDL starts with 1
   IF state>=1 AND state<=m_states.getLength() THEN
     RETURN m_states[state]
   END IF

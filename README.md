@@ -1,4 +1,4 @@
-# This fork is providing Genero 4GL specific additions, see [here](fgl/README.md).
+# This fork is providing Genero BDL specific additions, see [here](fgl/README.md).
 
 
 
