@@ -202,6 +202,9 @@ END FUNCTION
 
 #+ Returns the playback elasped time.
 #+
+#+ The returned value is a FLOAT representing a number of seconds, with
+#+ sub-seconds after the decimal point.
+#+
 #+ Only works while playing a sound file, not while recording.
 #+
 #+ @param soundId id used to start the playback.
@@ -263,7 +266,11 @@ END FUNCTION
 #+
 #+ This works only if the file exists and is playable.
 #+
+#+ The returned value is a FLOAT representing a number of seconds, with
+#+ sub-seconds after the decimal point.
+#+
 #+ @param soundId is the sound identifier registered with a create() call
+#+
 #+ @return duration of the file.
 PUBLIC FUNCTION getDurationAudio(soundId STRING) RETURNS FLOAT
   DEFINE fileName STRING
@@ -381,6 +388,9 @@ END FUNCTION
 
 #+ Returns the media duration when the status message type is MEDIA_DURATION.
 #+
+#+ The returned value is a FLOAT representing a number of seconds, with
+#+ sub-seconds after the decimal point.
+#+
 #+ @param mediaStatus is the return value of getNextStatus()
 #+
 #+ @return returns a duration out of the given mediaStatus.
@@ -393,6 +403,9 @@ PUBLIC FUNCTION getDurationFromStatus(mediaStatus StatusT) RETURNS FLOAT
 END FUNCTION
 
 #+ Returns the media position when the status message type is MEDIA_POSITION.
+#+
+#+ The returned value is a FLOAT representing a number of seconds, with
+#+ sub-seconds after the decimal point.
 #+
 #+ @param mediaStatus is the return value of getNextStatus()
 #+

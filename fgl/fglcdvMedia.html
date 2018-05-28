@@ -330,6 +330,8 @@
 <tt>FUNCTION <b>getCurrentPositionAudio</b>(soundId STRING) RETURNS FLOAT</tt><dl>
 <dd>
 <p> Returns the playback elasped time.</p>
+<p> The returned value is a FLOAT representing a number of seconds, with
+ sub-seconds after the decimal point.</p>
 <p> Only works while playing a sound file, not while recording.</p>
 </dd>
 <dd><dl>
@@ -348,6 +350,8 @@
 <dd>
 <p> Returns the duration for a media id. </p>
 <p> This works only if the file exists and is playable.</p>
+<p> The returned value is a FLOAT representing a number of seconds, with
+ sub-seconds after the decimal point.</p>
 </dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
@@ -362,7 +366,11 @@
 <hr>
 <a id="getDurationFromStatus"> </a><h3>getDurationFromStatus</h3>
 <tt>FUNCTION <b>getDurationFromStatus</b>(mediaStatus <a href="#StatusT">StatusT</a>) RETURNS FLOAT</tt><dl>
-<dd><p> Returns the media duration when the status message type is MEDIA_DURATION.</p></dd>
+<dd>
+<p> Returns the media duration when the status message type is MEDIA_DURATION.</p>
+<p> The returned value is a FLOAT representing a number of seconds, with
+ sub-seconds after the decimal point.</p>
+</dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
 <dd>
@@ -449,7 +457,11 @@
 <hr>
 <a id="getPositionFromStatus"> </a><h3>getPositionFromStatus</h3>
 <tt>FUNCTION <b>getPositionFromStatus</b>(mediaStatus <a href="#StatusT">StatusT</a>) RETURNS FLOAT</tt><dl>
-<dd><p> Returns the media position when the status message type is MEDIA_POSITION.</p></dd>
+<dd>
+<p> Returns the media position when the status message type is MEDIA_POSITION.</p>
+<p> The returned value is a FLOAT representing a number of seconds, with
+ sub-seconds after the decimal point.</p>
+</dd>
 <dd><dl>
 <dt><b>Parameters:</b></dt>
 <dd>
