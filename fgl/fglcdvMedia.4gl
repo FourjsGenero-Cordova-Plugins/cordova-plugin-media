@@ -369,7 +369,7 @@ END FUNCTION
 #+
 #+ @param mediaStatus is the return value of getNextStatus()
 #+
-#+ @return a mediaId used for recording of playing.
+#+ @return a sound identifier used for recording of playing.
 PUBLIC FUNCTION getMediaIdFromStatus(mediaStatus StatusT) RETURNS STRING
   RETURN mediaStatus.get("id")
 END FUNCTION
