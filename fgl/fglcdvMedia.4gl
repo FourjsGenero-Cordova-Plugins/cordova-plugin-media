@@ -157,7 +157,7 @@ END FUNCTION
 #+ If the file exists, it will be overwritten. 
 #+ The directory for the file must exist.
 #+
-#+ Possible recording file extensions on IOS: .wav and .mp4 , on Android: .mp3 and .aac .
+#+ Possible recording file extensions on IOS: .wav and .m4a , on Android: .mp3 and .wav .
 #+
 #+ Causes a cordovacallback about state change.
 #+
@@ -442,17 +442,18 @@ PUBLIC FUNCTION getRecordingExtensions() RETURNS DYNAMIC ARRAY OF STRING
   DEFINE exts DYNAMIC ARRAY OF STRING
   CASE ui.Interface.getFrontEndName()
     WHEN "GMI" 
-      LET exts[1]="wav"
-      LET exts[2]="m4a"
+      LET exts[1]="m4a"
+      LET exts[2]="wav"
     WHEN "GMA" 
-      LET exts[1]="aac"
+      LET exts[1]="mp3"
+      LET exts[2]="wav"
   END CASE
   RETURN exts
 END FUNCTION
 
 #+ Returns TRUE if a given file extension is a valid extension for recording.
 #+
-#+ @param extension extension such as "m4a" or "aac"
+#+ @param extension extension such as "m4a" or "mp3"
 #+ @return TRUE if the extension is usable for recording, FALSE otherwise
 PUBLIC FUNCTION isValidRecordingExtension(extension STRING) RETURNS BOOLEAN
    DEFINE validExtensions DYNAMIC ARRAY OF STRING
