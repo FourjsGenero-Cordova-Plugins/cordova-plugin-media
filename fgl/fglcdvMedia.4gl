@@ -113,7 +113,9 @@ END FUNCTION
 
 #+ Starts playing a sound file.
 #+
-#+ When the playback is over, a cordovacallback action is triggered.
+#+ Starting the playback causes a cordovacallback action, indicating a state change.
+#+
+#+ When the playback is over, a cordovacallback action is also triggered.
 #+
 #+ The file for playback must have been registered with the create call, and
 #+ must exist. The file extension can vary depending on the platform.

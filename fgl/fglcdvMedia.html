@@ -673,7 +673,8 @@
 <tt>FUNCTION <b>startPlayingAudio</b>(soundId STRING, playOptions <a href="#playOptionsT">playOptionsT</a>)</tt><dl>
 <dd>
 <p> Starts playing a sound file.</p>
-<p> When the playback is over, a cordovacallback action is triggered.</p>
+<p> Starting the playback causes a cordovacallback action, indicating a state change.</p>
+<p> When the playback is over, a cordovacallback action is also triggered.</p>
 <p> The file for playback must have been registered with the create call, and
  must exist. The file extension can vary depending on the platform.</p>
 </dd>
