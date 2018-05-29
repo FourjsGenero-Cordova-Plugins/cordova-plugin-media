@@ -22,10 +22,10 @@
 <a id="type_summary"></a><table border="1" width="100%" cellpadding="3" cellspacing="0" class="summary">
 <tr><th class="summary" colspan="1">TYPE Summary</th></tr>
 <tr><td class="summary-text">
-<b><a href="#StatusT">StatusT</a></b> util.JSONObject<br>
+<b><a href="#PlayOptionsT">PlayOptionsT</a></b> RECORD &lt;anonymous fglcdvMedia R1&gt;<br>
 </td></tr>
 <tr><td class="summary-text">
-<b><a href="#playOptionsT">playOptionsT</a></b> RECORD &lt;anonymous fglcdvMedia R1&gt;<br>
+<b><a href="#StatusT">StatusT</a></b> util.JSONObject<br>
 </td></tr>
 </table>
 <br><a id="constant_summary"></a><table border="1" width="100%" cellpadding="3" cellspacing="0" class="summary">
@@ -61,7 +61,7 @@
 <br><a id="field_summary"></a><table border="1" width="100%" cellpadding="3" cellspacing="0" class="summary">
 <tr><th class="summary" colspan="1">VARIABLE Summary</th></tr>
 <tr><td class="summary-text">
-<b><a href="#playOptions">playOptions</a></b> <a href="#playOptionsT">playOptionsT</a><br> Helper to avoid the need to define this record in user code if there is just one player</td></tr>
+<b><a href="#playOptions">playOptions</a></b> <a href="#PlayOptionsT">PlayOptionsT</a><br> Helper to avoid the need to define this record in user code if there is just one player</td></tr>
 </table>
 <br><a id="function_summary"></a><table border="1" width="100%" cellpadding="3" cellspacing="0" class="summary">
 <tr><th class="summary" colspan="2">FUNCTION Summary</th></tr>
@@ -194,7 +194,7 @@
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#startPlayingAudio">startPlayingAudio</a></b>(soundId STRING, playOptions <a href="#playOptionsT">playOptionsT</a>)<br> Starts playing a sound file.</td>
+<b><a href="#startPlayingAudio">startPlayingAudio</a></b>(soundId STRING, playOptions <a href="#PlayOptionsT">PlayOptionsT</a>)<br> Starts playing a sound file.</td>
 </tr>
 <tr>
 <td class="summary-text"></td>
@@ -213,20 +213,20 @@
 </tr>
 </table>
 <br><h2>Types</h2>
-<a id="StatusT"> </a><h3>StatusT</h3>
-<tt>TYPE <b>StatusT</b> util.JSONObject</tt><dl>
-<dd></dd>
-<dd><dl></dl></dd>
-</dl>
-<hr>
-<a id="playOptionsT"> </a><h3>playOptionsT</h3>
-<tt>TYPE <b>playOptionsT</b> RECORD &lt;anonymous fglcdvMedia R1&gt;<table border="0" cellpadding="0" cellspacing="0" class="member"><tr>
+<a id="PlayOptionsT"> </a><h3>PlayOptionsT</h3>
+<tt>TYPE <b>PlayOptionsT</b> RECORD &lt;anonymous fglcdvMedia R1&gt;<table border="0" cellpadding="0" cellspacing="0" class="member"><tr>
 <td>    </td>
 <td><table border="0" cellpadding="0" cellspacing="0" class="member">
 <tr><td>playAudioWhenScreenIsLocked BOOLEAN</td></tr>
 <tr><td>numberOfLoops INTEGER</td></tr>
 </table></td>
 </tr></table> END RECORD</tt><dl>
+<dd></dd>
+<dd><dl></dl></dd>
+</dl>
+<hr>
+<a id="StatusT"> </a><h3>StatusT</h3>
+<tt>TYPE <b>StatusT</b> util.JSONObject</tt><dl>
 <dd></dd>
 <dd><dl></dl></dd>
 </dl>
@@ -288,7 +288,7 @@
 <hr>
 <h2>Variables</h2>
 <a id="playOptions"> </a><h3>playOptions</h3>
-<tt>DEFINE <b>playOptions</b> <a href="#playOptionsT">playOptionsT</a></tt><dl>
+<tt>DEFINE <b>playOptions</b> <a href="#PlayOptionsT">PlayOptionsT</a></tt><dl>
 <dd><p> Helper to avoid the need to define this record in user code if there is just one player</p></dd>
 <dd><dl></dl></dd>
 </dl>
@@ -537,7 +537,7 @@
 <dd><dl>
 <dt><b>Parameters:</b></dt>
 <dd>
-<code>extension</code> - extension such as "m4a" or "mp3"<br>
+<code>extension</code> - extension such as "m4a" or "aac"<br>
 </dd>
 <dt><b>Returns:</b></dt>
 <dd>TRUE if the extension is usable for recording, FALSE otherwise<br>
@@ -670,7 +670,7 @@
 </dl>
 <hr>
 <a id="startPlayingAudio"> </a><h3>startPlayingAudio</h3>
-<tt>FUNCTION <b>startPlayingAudio</b>(soundId STRING, playOptions <a href="#playOptionsT">playOptionsT</a>)</tt><dl>
+<tt>FUNCTION <b>startPlayingAudio</b>(soundId STRING, playOptions <a href="#PlayOptionsT">PlayOptionsT</a>)</tt><dl>
 <dd>
 <p> Starts playing a sound file.</p>
 <p> Starting the playback causes a cordovacallback action, indicating a state change.</p>
@@ -681,7 +681,7 @@
 <dd><dl>
 <dt><b>Parameters:</b></dt>
 <dd>
-<code>soundId</code> - is the sound identifier registered with a create() call<br><code>playOptions</code> - see playOptionsT<br>
+<code>soundId</code> - is the sound identifier registered with a create() call<br><code>playOptions</code> - see PlayOptionsT<br>
 </dd>
 </dl></dd>
 </dl>
@@ -692,7 +692,7 @@
 <p> Starts recording to file.</p>
 <p> If the file exists, it will be overwritten. 
  The directory for the file must exist.</p>
-<p> Possible recording file extensions on IOS: .wav and .m4a , on Android: .mp3 and .wav .</p>
+<p> Possible recording file extensions on IOS: .m4a and .wav , on Android: .aac .</p>
 <p> Causes a cordovacallback about state change.</p>
 </dd>
 <dd><dl>

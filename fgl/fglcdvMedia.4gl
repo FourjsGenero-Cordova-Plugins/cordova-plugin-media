@@ -30,13 +30,13 @@ DEFINE m_statusarr DYNAMIC ARRAY OF util.JSONObject
 
 PUBLIC TYPE StatusT util.JSONObject
 
-PUBLIC TYPE playOptionsT RECORD
+PUBLIC TYPE PlayOptionsT RECORD
   playAudioWhenScreenIsLocked BOOLEAN,
   numberOfLoops INT
 END RECORD
 
 #+ Helper to avoid the need to define this record in user code if there is just one player
-PUBLIC DEFINE playOptions playOptionsT
+PUBLIC DEFINE playOptions PlayOptionsT
 
 #+ Initializes the plugin
 #+ must be called prior other calls
@@ -121,8 +121,8 @@ END FUNCTION
 #+ must exist. The file extension can vary depending on the platform.
 #+
 #+ @param soundId is the sound identifier registered with a create() call
-#+ @param playOptions see playOptionsT
-PUBLIC FUNCTION startPlayingAudio(soundId STRING,playOptions playOptionsT)
+#+ @param playOptions see PlayOptionsT
+PUBLIC FUNCTION startPlayingAudio(soundId STRING,playOptions PlayOptionsT)
   DEFINE fileName STRING
   LET filename=m_hash[soundId]
   CALL ui.interface.frontcall(CDV,CALLWOW,
@@ -157,7 +157,7 @@ END FUNCTION
 #+ If the file exists, it will be overwritten. 
 #+ The directory for the file must exist.
 #+
-#+ Possible recording file extensions on IOS: .wav and .m4a , on Android: .mp3 and .wav .
+#+ Possible recording file extensions on IOS: .m4a and .wav , on Android: .aac .
 #+
 #+ Causes a cordovacallback about state change.
 #+
@@ -445,15 +445,15 @@ PUBLIC FUNCTION getRecordingExtensions() RETURNS DYNAMIC ARRAY OF STRING
       LET exts[1]="m4a"
       LET exts[2]="wav"
     WHEN "GMA" 
-      LET exts[1]="mp3"
-      LET exts[2]="wav"
+      LET exts[1]="aac"
   END CASE
   RETURN exts
 END FUNCTION
 
 #+ Returns TRUE if a given file extension is a valid extension for recording.
 #+
-#+ @param extension extension such as "m4a" or "mp3"
+#+ @param extension extension such as "m4a" or "aac"
+#+
 #+ @return TRUE if the extension is usable for recording, FALSE otherwise
 PUBLIC FUNCTION isValidRecordingExtension(extension STRING) RETURNS BOOLEAN
    DEFINE validExtensions DYNAMIC ARRAY OF STRING
