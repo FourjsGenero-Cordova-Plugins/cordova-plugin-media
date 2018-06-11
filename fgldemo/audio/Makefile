@@ -22,9 +22,9 @@ FORMS   = $(patsubst %.per, %.42f, $(wildcard *.per))
 MEDIA=cordova-plugin-media
 # in case you build the demo when having the plugin checked out of github 
 # then we use the fglcvdMedia.42m in the fgl dir of the plugin
-ifneq ($(wildcard ../../fgl),)
+ifneq ($(wildcard ../../fgldemo),)
   MEDIA=$(CURDIR)/../..
-  FGLLDPATH=../..
+  FGLLDPATH=../../fgl
 endif
 
 MODULES  = $(patsubst %.4gl, %.42m, $(wildcard *.4gl))
