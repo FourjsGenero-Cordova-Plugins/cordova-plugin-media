@@ -35,8 +35,9 @@ MAIN
   DEFINE fduration,prevpos DOUBLE PRECISION
   DEFINE starttime DATETIME HOUR TO SECOND
   DEFINE slider,prevState INT
+
   LET int_flag=FALSE
-  CALL fglcdvMedia.init()
+  CALL fglcdvMedia.initialize()
 
   OPEN FORM f FROM "main"
   DISPLAY FORM f
@@ -207,6 +208,7 @@ LABEL play_action:
         END CASE
   END INPUT
   CALL fglcdvMedia.release(SOUNDID)
+  CALL fglcdvMedia.finalize()
 END MAIN
 
 FUNCTION seek(slider INT)
