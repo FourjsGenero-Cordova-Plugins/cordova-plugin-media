@@ -73,11 +73,6 @@
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#finalize">finalize</a></b>()<br> Finalizes the plugin library</td>
-</tr>
-<tr>
-<td class="summary-text"></td>
-<td class="summary-text">
 <b><a href="#getCurrentAmplitudeAudio">getCurrentAmplitudeAudio</a></b>(soundId STRING) RETURNS FLOAT<br> Returns the Audio Meter level when recording.</td>
 </tr>
 <tr>
@@ -143,12 +138,7 @@
 <tr>
 <td class="summary-text"></td>
 <td class="summary-text">
-<b><a href="#init">init</a></b>()<br> Provided for backward compatibility, use initialize() instead.</td>
-</tr>
-<tr>
-<td class="summary-text"></td>
-<td class="summary-text">
-<b><a href="#initialize">initialize</a></b>()<br> Initializes the plugin
+<b><a href="#init">init</a></b>()<br> Initializes the plugin
  must be called prior other calls</td>
 </tr>
 <tr>
@@ -320,15 +310,6 @@
 <code>soundId</code> - the identifier to be associated to the media source<br><code>filename</code> - file path for playing or recording, or URL for streaming.<br>
 </dd>
 </dl></dd>
-</dl>
-<hr>
-<a id="finalize"> </a><h3>finalize</h3>
-<tt>FUNCTION <b>finalize</b>()</tt><dl>
-<dd>
-<p> Finalizes the plugin library</p>
-<p> The finalize() function should be called when the library is no longer used.</p>
-</dd>
-<dd><dl></dl></dd>
 </dl>
 <hr>
 <a id="getCurrentAmplitudeAudio"> </a><h3>getCurrentAmplitudeAudio</h3>
@@ -545,12 +526,6 @@
 <hr>
 <a id="init"> </a><h3>init</h3>
 <tt>FUNCTION <b>init</b>()</tt><dl>
-<dd><p> Provided for backward compatibility, use initialize() instead.</p></dd>
-<dd><dl></dl></dd>
-</dl>
-<hr>
-<a id="initialize"> </a><h3>initialize</h3>
-<tt>FUNCTION <b>initialize</b>()</tt><dl>
 <dd><p> Initializes the plugin
  must be called prior other calls</p></dd>
 <dd><dl></dl></dd>

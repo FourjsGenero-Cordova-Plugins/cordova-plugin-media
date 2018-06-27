@@ -38,51 +38,11 @@ END RECORD
 #+ Helper to avoid the need to define this record in user code if there is just one player
 PUBLIC DEFINE playOptions PlayOptionsT
 
-PRIVATE DEFINE initialized BOOLEAN
-
-#+ Provided for backward compatibility, use initialize() instead.
-PUBLIC FUNCTION init()
-  CALL initialize()
-END FUNCTION
-
 #+ Initializes the plugin
 #+ must be called prior other calls
-PUBLIC FUNCTION initialize()
-  IF initialized THEN -- exclusive library usage
-     CALL fatalError("The library is already in use.")
-  END IF
-  LET initialized = TRUE
+PUBLIC FUNCTION init()
   CALL util.JSON.parse(MEDIA_STATE_MSG,m_states)
   CALL messageChannel()
-END FUNCTION
-
-#+ Finalizes the plugin library
-#+
-#+ The finalize() function should be called when the library is no longer used.
-#+
-PUBLIC FUNCTION finalize()
-    IF initialized THEN
-        -- do fini stuff
-        LET initialized = FALSE
-    END IF
-END FUNCTION
-
-PRIVATE FUNCTION fatalError(msg STRING)
-    DISPLAY "fglcdvCalendar error: ", msg
-    EXIT PROGRAM 1
-END FUNCTION
-
-PRIVATE FUNCTION check_lib_state()
-    IF NOT initialized THEN
-        CALL fatalError("Library is not initialized.")
-    END IF
-END FUNCTION
-
-PRIVATE FUNCTION check_sound_id(soundId STRING)
-    CALL check_lib_state()
-    IF NOT m_hash.contains(soundId) THEN
-        CALL fatalError(SFMT("Invalid sound ID %1.",soundId))
-    END IF
 END FUNCTION
 
 #+ Returns a string description for a messageType
@@ -91,7 +51,6 @@ END FUNCTION
 #+
 #+ @return "MEDIA_STATE", "MEDIA_DURATION", "MEDIA_POSITION", Or "MEDIA_ERROR"
 PUBLIC FUNCTION messageType2String(messageType INT) RETURNS STRING
-  CALL check_lib_state()
   CASE messageType
     WHEN MEDIA_STATE RETURN "MEDIA_STATE"
     WHEN MEDIA_DURATION RETURN "MEDIA_DURATION"
@@ -108,7 +67,6 @@ END FUNCTION
 #+
 #+ @return "None", "Starting", "Running", "Paused", Or "Stopped"
 PUBLIC FUNCTION mediaState2String(state INT) RETURNS STRING
-  CALL check_lib_state()
   LET state=state+1 --BDL starts with 1
   IF state>=1 AND state<=m_states.getLength() THEN
     RETURN m_states[state]
@@ -133,10 +91,6 @@ END FUNCTION
 #+ @param soundId the identifier to be associated to the media source
 #+ @param filename file path for playing or recording, or URL for streaming.
 PUBLIC FUNCTION create(soundId STRING,filename STRING)
-  CALL check_lib_state()
-  IF m_hash.contains(soundId) THEN
-     CALL fatalError(SFMT("Sound ID %1 already used.",soundId))
-  END IF
   LET m_hash[soundId]=filename
   --we must not call create if the file does not yet exist (GMI)
   IF os.Path.exists(filename) OR filename.getIndexOf("http",1)==1 THEN
@@ -151,7 +105,6 @@ END FUNCTION
 #+ @param soundId is the sound identifier to be released.
 PUBLIC FUNCTION release(soundId STRING)
   DEFINE method STRING
-  CALL check_sound_id(soundId)
   --Android: returns a result, IOS: does not return a result
   LET method=IIF(ui.Interface.getFrontEndName()=="GMA",_CALL,CALLWOW)
   CALL ui.interface.frontcall(CDV,method, [MEDIA,"release",soundId],[])
@@ -171,7 +124,6 @@ END FUNCTION
 #+ @param playOptions see PlayOptionsT
 PUBLIC FUNCTION startPlayingAudio(soundId STRING,playOptions PlayOptionsT)
   DEFINE fileName STRING
-  CALL check_sound_id(soundId)
   LET filename=m_hash[soundId]
   CALL ui.interface.frontcall(CDV,CALLWOW,
         [MEDIA,"startPlayingAudio",soundId
@@ -186,7 +138,6 @@ END FUNCTION
 #+
 #+ @param soundId id used to start the playback.
 PUBLIC FUNCTION pausePlayingAudio(soundId STRING)
-  CALL check_sound_id(soundId)
   CALL ui.interface.frontcall(CDV,CALLWOW,
                 [MEDIA,"pausePlayingAudio",soundId],[])
 END FUNCTION
@@ -197,7 +148,6 @@ END FUNCTION
 #+
 #+ @param soundId id used to start the playback.
 PUBLIC FUNCTION stopPlayingAudio(soundId STRING)
-  CALL check_sound_id(soundId)
   CALL ui.interface.frontcall(CDV,CALLWOW,
         [MEDIA,"stopPlayingAudio",soundId],[])
 END FUNCTION
@@ -214,7 +164,6 @@ END FUNCTION
 #+ @param soundId is the sound identifier registered with a create() call
 PUBLIC FUNCTION startRecordingAudio(soundId STRING)
   DEFINE filename STRING
-  CALL check_sound_id(soundId)
   LET filename=m_hash[soundId]
   CALL ui.interface.frontcall(CDV,CALLWOW,
            [MEDIA,"startRecordingAudio",soundId,fileName],[])  
@@ -226,7 +175,7 @@ END FUNCTION
 #+
 #+ @param soundId id used to start the recording.
 PUBLIC FUNCTION stopRecordingAudio(soundId STRING)
-  CALL check_sound_id(soundId)
+  --DISPLAY "stopRecording"
   CALL ui.interface.frontcall(CDV,CALLWOW,
            [MEDIA,"stopRecordingAudio",soundId],[])  
 END FUNCTION
@@ -239,7 +188,6 @@ END FUNCTION
 #+
 #+ @param soundId id used to start the recording.
 PUBLIC FUNCTION pauseRecordingAudio(soundId STRING)
-  CALL check_sound_id(soundId)
   CALL ui.interface.frontcall(CDV,CALLWOW,
           [MEDIA,"pauseRecordingAudio",soundId],[])
 END FUNCTION 
@@ -250,7 +198,6 @@ END FUNCTION
 #+
 #+ @param soundId id used to start the recording.
 PUBLIC FUNCTION resumeRecordingAudio(soundId STRING)
-  CALL check_sound_id(soundId)
   CALL ui.interface.frontcall(CDV,CALLWOW,
           [MEDIA,"resumeRecordingAudio",soundId],[])
 END FUNCTION
@@ -266,9 +213,9 @@ END FUNCTION
 #+ @return the elapsed time.
 PUBLIC FUNCTION getCurrentPositionAudio(soundId STRING) RETURNS FLOAT
    DEFINE position FLOAT
-   CALL check_sound_id(soundId)
    CALL ui.interface.frontcall(CDV,_CALL,
          [MEDIA,"getCurrentPositionAudio",soundId],[position])
+   --DISPLAY "position:",position
    RETURN position
 END FUNCTION
 
@@ -279,7 +226,6 @@ END FUNCTION
 #+ @return a normalized value between 0.0 and 1.0 .
 PUBLIC FUNCTION getCurrentAmplitudeAudio(soundId STRING) RETURNS FLOAT
    DEFINE amplitude FLOAT 
-   CALL check_sound_id(soundId)
    CALL ui.Interface.frontCall(CDV,_CALL,
      [Media,"getCurrentAmplitudeAudio",soundId],[amplitude])
    RETURN amplitude
@@ -290,7 +236,6 @@ END FUNCTION
 #+ @param soundId id used to start the playback.
 #+ @param volume range 0.0 to 1.0 .
 PUBLIC FUNCTION setVolume(soundId STRING,volume FLOAT) 
-   CALL check_sound_id(soundId)
    CALL ui.Interface.frontCall(CDV,CALLWOW,
      [Media,"setVolume",soundId,volume],[])
 END FUNCTION
@@ -300,7 +245,6 @@ END FUNCTION
 #+ @param soundId id used to start the playback.
 #+ @param rate range 0.0 to 1.0 .
 PUBLIC FUNCTION setRate(soundId STRING,rate FLOAT) 
-   CALL check_sound_id(soundId)
    IF ui.Interface.getFrontEndName()=="GMI" THEN
      CALL ui.Interface.frontCall(CDV,CALLWOW,
        [Media,"setRate",soundId,rate],[])
@@ -316,9 +260,8 @@ END FUNCTION
 #+ @param soundId id used to start the playback.
 #+ @param position milliseconds since start.
 PUBLIC FUNCTION seekToAudio(soundId STRING,position INT) 
-   CALL check_sound_id(soundId)
    CALL ui.Interface.frontCall(CDV,CALLWOW,
-     [Media,"seekToAudio",soundId,position],[])
+       [Media,"seekToAudio",soundId,position],[])
 END FUNCTION
 
 #+ Returns the duration for a media id. 
@@ -334,10 +277,9 @@ END FUNCTION
 PUBLIC FUNCTION getDurationAudio(soundId STRING) RETURNS FLOAT
   DEFINE fileName STRING
   DEFINE duration FLOAT
-  CALL check_sound_id(soundId)
   LET filename=m_hash[soundId]
   CALL ui.Interface.frontCall(CDV,_CALL,
-    [Media,"getDurationAudio",soundId,filename],[duration])
+       [Media,"getDurationAudio",soundId,filename],[duration])
   RETURN duration
 END FUNCTION
 
@@ -354,9 +296,9 @@ END FUNCTION
 #+     --do things with the status objects
 PUBLIC FUNCTION handleCallback()
    DEFINE result STRING
-   CALL check_lib_state()
    CALL ui.Interface.frontCall(CDV,"getAllCallbackData",
      ["Media-"],[result])
+   --DISPLAY "fglcdvMedia.handleCallback:",result
    CALL parseJSON(result)
 END FUNCTION
 
@@ -378,7 +320,6 @@ END FUNCTION
 #+
 #+ @return count of objects
 PUBLIC FUNCTION getStatusCount() RETURNS INT
-  CALL check_lib_state()
   RETURN m_statusarr.getLength()
 END FUNCTION
 
@@ -407,7 +348,6 @@ END FUNCTION
 #+ END WHILE
 PUBLIC FUNCTION getNextStatus() RETURNS StatusT
   DEFINE st util.JSONObject
-  CALL check_lib_state()
   IF m_statusarr.getLength()==0 THEN
     RETURN NULL
   END IF
@@ -423,7 +363,6 @@ END FUNCTION
 #+ @return MEDIA_STATE, MEDIA_DURATION, MEDIA_POSITION or MEDIA_ERROR
 PUBLIC FUNCTION getMessageTypeFromStatus(mediaStatus StatusT) RETURNS INT
   DEFINE msgType INT
-  CALL check_lib_state()
   LET msgType=mediaStatus.get("msgType")
   RETURN msgType
 END FUNCTION
@@ -434,7 +373,6 @@ END FUNCTION
 #+
 #+ @return a sound identifier used for recording of playing.
 PUBLIC FUNCTION getMediaIdFromStatus(mediaStatus StatusT) RETURNS STRING
-  CALL check_lib_state()
   RETURN mediaStatus.get("id")
 END FUNCTION
 
@@ -445,8 +383,8 @@ END FUNCTION
 #+ @return MEDIA_STATE_NONE, MEDIA_STATE_STARTING, MEDIA_STATE_RUNNING, MEDIA_STATE_PAUSED, MEDIA_STATE_STOPPED
 PUBLIC FUNCTION getStateFromStatus(mediaStatus StatusT) RETURNS INT
   DEFINE state INT
-  CALL check_lib_state()
   LET state=mediaStatus.get("value")
+  --DISPLAY "media state:",mediaState2String(state)
   RETURN state
 END FUNCTION
 
@@ -460,9 +398,9 @@ END FUNCTION
 #+ @return returns a duration out of the given mediaStatus.
 PUBLIC FUNCTION getDurationFromStatus(mediaStatus StatusT) RETURNS FLOAT
   DEFINE duration FLOAT 
-  CALL check_lib_state()
   -- for ex. { "status": { "msgType":2 ,"value":4.0 }}
   LET duration=mediaStatus.get("value")
+  --DISPLAY sfmt("duration:%1",duration)
   RETURN duration
 END FUNCTION
 
@@ -477,7 +415,6 @@ END FUNCTION
 PUBLIC FUNCTION getPositionFromStatus(mediaStatus StatusT) RETURNS FLOAT
   DEFINE position FLOAT 
   -- for ex. { "status": { "msgType":3 ,"value":0.0 }}
-  CALL check_lib_state()
   LET position=mediaStatus.get("value")
   RETURN position
 END FUNCTION
@@ -492,7 +429,6 @@ PUBLIC FUNCTION getErrorFromStatus(mediaStatus util.JSONObject) RETURNS (INT,STR
   DEFINE code INT
   DEFINE message STRING
   -- for ex. { "status": { "msgType":9 ,"value":{ "message":"someErr",code:5 }}}
-  CALL check_lib_state()
   LET err=mediaStatus.get("value")
   LET message=err.get("message")
   LET code=err.get("code")
@@ -504,7 +440,6 @@ END FUNCTION
 #+ @return The list of recording file extensions (m4a for ex)
 PUBLIC FUNCTION getRecordingExtensions() RETURNS DYNAMIC ARRAY OF STRING
   DEFINE exts DYNAMIC ARRAY OF STRING
-  CALL check_lib_state()
   CASE ui.Interface.getFrontEndName()
     WHEN "GMI" 
       LET exts[1]="m4a"
@@ -522,7 +457,6 @@ END FUNCTION
 #+ @return TRUE if the extension is usable for recording, FALSE otherwise
 PUBLIC FUNCTION isValidRecordingExtension(extension STRING) RETURNS BOOLEAN
    DEFINE validExtensions DYNAMIC ARRAY OF STRING
-   CALL check_lib_state()
    LET validExtensions=getRecordingExtensions()
    RETURN validExtensions.search("*",extension)<>0 
 END FUNCTION
