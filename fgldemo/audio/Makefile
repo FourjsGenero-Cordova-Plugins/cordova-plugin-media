@@ -31,7 +31,7 @@ MODULES  = $(patsubst %.4gl, %.42m, $(wildcard *.4gl))
 FORMS    = $(patsubst %.per, %.42f, $(wildcard *.per))
 
 %.42m: %.4gl
-	FGLLDPATH=$(FGLLDPATH) fglcomp -M $*
+	FGLLDPATH=$(FGLLDPATH) fglcomp -M --resolve-calls $*
 
 %.42f: %.per
 	fglform -M $*

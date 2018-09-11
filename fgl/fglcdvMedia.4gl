@@ -7,8 +7,12 @@
 #       https://www.apache.org/licenses/LICENSE-2.0
 
 #+ Genero BDL wrapper around the Cordova Media plugin.
+OPTIONS SHORT CIRCUIT
 IMPORT util
 IMPORT os
+IMPORT FGL fgldialog
+# defines GIT_VERSION and is created during the build process
+&include "git_version.txt"
 PUBLIC CONSTANT MEDIA_STATE = 1
 PUBLIC CONSTANT MEDIA_DURATION = 2
 PUBLIC CONSTANT MEDIA_POSITION = 3
@@ -41,8 +45,90 @@ PUBLIC DEFINE playOptions PlayOptionsT
 #+ Initializes the plugin
 #+ must be called prior other calls
 PUBLIC FUNCTION init()
+  IF ui.Interface.getFrontEndName()=="GMI" AND
+      versionBiggerOrEqual(ui.Interface.getFrontEndVersion(),'1.30.14') THEN
+    CALL checkGitVersion(GIT_VERSION)
+  END IF
   CALL util.JSON.parse(MEDIA_STATE_MSG,m_states)
   CALL messageChannel()
+END FUNCTION
+
+#+ Splits a given version string (separated by dots) into a dynamic ARRAY 
+#+ @param version - a version number like '1.30.15'
+#+
+#+ @return the version numbers in an array
+PRIVATE FUNCTION splitNumbers(version STRING) RETURNS DYNAMIC ARRAY OF INT
+  DEFINE arr DYNAMIC ARRAY OF INT
+  DEFINE tok base.StringTokenizer
+  LET tok=base.StringTokenizer.create(version,".")
+  WHILE tok.hasMoreTokens()
+    LET arr[arr.getLength()+1]=tok.nextToken()
+    IF arr.getLength()==3 THEN
+      EXIT WHILE
+    END IF
+  END WHILE
+  RETURN arr
+END FUNCTION
+
+#+ checks if a clients version number is bigger or equal to a given version number
+#+
+#+ @param version - a version number like '1.30.15'
+#+ @param compare_version - a version number like '1.30.01'
+#+ @return TRUE if version>=compare version
+PRIVATE FUNCTION versionBiggerOrEqual(version STRING,compare_version STRING) RETURNS BOOLEAN
+  DEFINE idx INT
+  DEFINE internal BOOLEAN
+  DEFINE arr,comp DYNAMIC ARRAY OF INT
+  LET comp=splitNumbers(compare_version)
+  DISPLAY "version:",version
+  --cut the git describe part for internal versions
+  IF (idx:=version.getIndexOf("-",1))>0 THEN
+    LET version=version.subString(1,idx-1)
+    LET internal=TRUE
+  END IF
+  LET arr=splitNumbers(version)
+  LET idx=1
+  WHILE idx<=arr.getLength() AND idx<=comp.getLength()
+    --DISPLAY sfmt("idx:%1,a:%2,comp:%3",idx,arr[idx],comp[idx])
+    CASE
+      WHEN idx==3
+        IF internal THEN
+          --pretending being one maintenance version ahead if internal
+          LET arr[3]=arr[3]+1
+        END IF
+        IF (arr[3]>=comp[3]) THEN
+          RETURN TRUE
+        ELSE
+          RETURN FALSE
+        END IF
+      WHEN arr[idx]>comp[idx]
+        RETURN TRUE
+      WHEN arr[idx]<comp[idx]
+        RETURN FALSE
+    END CASE
+    LET idx=idx+1
+  END WHILE
+  RETURN FALSE
+END FUNCTION
+
+
+#+ Checks if a this wrappers git version is equal to the version
+#+ of the native plugin.
+#+ The program is stopped if the versions do not match
+#+
+#+ @param gitver - a version number like 'gm_1.30.15'
+PRIVATE FUNCTION checkGitVersion(gitver STRING)
+  DEFINE rec RECORD
+    git_version STRING
+  END RECORD
+  DEFINE msg STRING
+  CALL ui.interface.frontcall("cordova","getPluginInfo",["Accelerometer"],[rec])
+  IF NOT gitver.equals(rec.git_version) THEN
+    LET msg=sfmt("Version mismatch, actual git version of the native plugin:%1, expected:%2.",rec.git_version,gitver)
+    DISPLAY "Error in fglcvdMotion.4gl:",msg
+    CALL fgl_winmessage("Error in fglcdvMotion.4gl",msg,"error")
+    EXIT PROGRAM 1
+  END IF
 END FUNCTION
 
 #+ Returns a string description for a messageType
