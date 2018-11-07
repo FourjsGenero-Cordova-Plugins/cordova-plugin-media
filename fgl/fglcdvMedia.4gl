@@ -122,7 +122,7 @@ PRIVATE FUNCTION checkGitVersion(gitver STRING)
     git_version STRING
   END RECORD
   DEFINE msg STRING
-  CALL ui.interface.frontcall("cordova","getPluginInfo",["Accelerometer"],[rec])
+  CALL ui.interface.frontcall("cordova","getPluginInfo",[MEDIA],[rec])
   IF NOT gitver.equals(rec.git_version) THEN
     LET msg=sfmt("Version mismatch, actual git version of the native plugin:%1, expected:%2.",rec.git_version,gitver)
     DISPLAY "Error in fglcvdMotion.4gl:",msg
